@@ -2,6 +2,9 @@ package no.ntnu.command.defaults;
 
 import no.ntnu.command.Command;
 
+/**
+ * Simple command that just prints "Pong!" a number of times
+ */
 public class PingCommand implements Command {
 
     @Override

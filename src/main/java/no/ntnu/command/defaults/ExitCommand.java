@@ -2,6 +2,9 @@ package no.ntnu.command.defaults;
 
 import no.ntnu.command.Command;
 
+/**
+ * Exits the application
+ */
 public class ExitCommand implements Command {
 
     @Override

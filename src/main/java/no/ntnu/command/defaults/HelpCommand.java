@@ -3,10 +3,16 @@ package no.ntnu.command.defaults;
 import no.ntnu.command.Command;
 import no.ntnu.command.CommandLineRunner;
 
+/**
+ * Lists all registered commands
+ */
 public class HelpCommand implements Command {
 
     private final CommandLineRunner runner;
 
+    /**
+     * @param runner The command line runner instance
+     */
     public HelpCommand(CommandLineRunner runner) {
         this.runner = runner;
     }
