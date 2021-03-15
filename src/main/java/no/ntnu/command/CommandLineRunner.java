@@ -1,5 +1,9 @@
 package no.ntnu.command;
 
+import no.ntnu.command.defaults.ExitCommand;
+import no.ntnu.command.defaults.HelpCommand;
+import no.ntnu.command.defaults.PingCommand;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +18,14 @@ public class CommandLineRunner {
 
     public CommandLineRunner() {
         this.commandMap = new HashMap<>();
+
+        this.registerCommand("help", new HelpCommand(this));
+        this.registerCommand("ping", new PingCommand());
+        this.registerCommand("exit", new ExitCommand());
+    }
+
+    public Map<String, Command> getCommands() {
+        return this.commandMap;
     }
 
     public void registerCommand(String label, Command command) {

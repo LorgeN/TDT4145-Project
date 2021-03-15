@@ -5,6 +5,16 @@ import no.ntnu.command.Command;
 public class PingCommand implements Command {
 
     @Override
+    public String getUsage() {
+        return "[amount]";
+    }
+
+    @Override
+    public String getDescription() {
+        return "Prints \"Pong!\" some amount of times";
+    }
+
+    @Override
     public void execute(String label, String[] args) {
         int amount = 1;
         if (args.length > 0) {
