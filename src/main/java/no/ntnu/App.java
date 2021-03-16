@@ -28,5 +28,16 @@ public class App {
 
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
+
+        if (this.connectionManager == null) {
+            return;
+        }
+
+        if (!this.connectionManager.testConnection()) {
+            System.out.println("Connection unsuccessful!");
+            return;
+        }
+
+        this.connectionManager.makeTables();
     }
 }

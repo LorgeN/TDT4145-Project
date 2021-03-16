@@ -1,5 +1,9 @@
 package no.ntnu.mysql;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -45,15 +49,26 @@ public class ConnectionManager {
      * a connection can be established by running a simple test query towards the
      * database.
      */
-    public void testConnection() {
+    public boolean testConnection() {
         System.out.println("Testing database connection...");
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
 
             statement.execute("SELECT 1");
-
-            System.out.println("Connection test successful!");
+            return true;
         } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void makeTables() {
+        try (Connection connection = this.getConnection()) {
+            InputStream stream = this.getClass().getResourceAsStream("/init.sql");
+
+            ScriptRunner runner = new ScriptRunner(connection, false, true);
+            runner.runScript(new BufferedReader(new InputStreamReader(stream)));
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }

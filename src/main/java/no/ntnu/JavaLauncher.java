@@ -31,7 +31,6 @@ public class JavaLauncher {
             System.out.println(" Password: " + password);
 
             app.setConnectionManager(new ConnectionManager(url, username, password));
-            app.getConnectionManager().testConnection();
         }
 
         app.startRunner();
