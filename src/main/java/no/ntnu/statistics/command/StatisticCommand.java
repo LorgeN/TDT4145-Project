@@ -1,26 +1,21 @@
 package no.ntnu.statistics.command;
 
-import no.ntnu.auth.AuthController;
+import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.statistics.StatisticsController;
 
 public class StatisticCommand extends ProtectedCommand {
 
-    private StatisticsController statisticsController;
+    private final StatisticsController statisticsController;
 
-    public StatisticCommand(AuthController authController, StatisticsController statisticsController) {
-        super(authController);
-        this.statisticsController = statisticsController;
+    public StatisticCommand(App app) {
+        super(app);
+        this.statisticsController = app.getStatisticsController();
     }
 
     @Override
     protected void protectedExecute(String label, String[] args) {
         this.statisticsController.printStatistics();
-    }
-
-    @Override
-    public String getUsage() {
-        return "";
     }
 
     @Override

@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class AuthController {
+
+    private static final String SELECT_USER_BY_EMAIL_STATEMENT = "SELECT Email, Name, Password FROM User WHERE Email = ?";
+
     private User currentUser = null;
     private ConnectionManager connectionManager;
 
@@ -17,9 +20,7 @@ public class AuthController {
 
     public void createUser(String email, String name, String password) throws SQLException {
         User user = new User(email, name, password);
-
-        user.save(connectionManager.getConnection());
-
+        user.save(this.connectionManager.getConnection());
     }
 
     public boolean loginUser(String email, String password) {
@@ -38,12 +39,15 @@ public class AuthController {
         return true;
     }
 
-    private User getUserByEmail(String email) {
+    public User getUserByEmail(String email) {
         User user = null;
-        String queryString = "SELECT Email, Name, Password FROM User WHERE Email = ?";
-        try (Connection connection = connectionManager.getConnection(); PreparedStatement preparedStatement = connection.prepareStatement(queryString)) {
-            preparedStatement.setString(1, email);
-            ResultSet result = preparedStatement.executeQuery();
+
+        try (Connection connection = this.connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SELECT_USER_BY_EMAIL_STATEMENT);
+            statement.setString(1, email);
+
+            ResultSet result = statement.executeQuery();
+
             if (result.next()) {
                 user = new User(result.getString("Email"), result.getString("Name"), result.getString("Password"));
             }

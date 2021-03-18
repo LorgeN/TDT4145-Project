@@ -1,16 +1,16 @@
 package no.ntnu.auth.command;
 
-import no.ntnu.auth.AuthController;
+import no.ntnu.App;
 
 public class CurrentUserCommand extends ProtectedCommand {
 
-    public CurrentUserCommand(AuthController authController) {
-        super(authController);
+    public CurrentUserCommand(App app) {
+        super(app);
     }
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        System.out.println(this.authController.getCurrentUser());
+        System.out.println(this.getApp().getAuthController().getCurrentUser());
 
     }
 
