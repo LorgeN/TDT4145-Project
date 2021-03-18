@@ -22,19 +22,20 @@ public class AuthController {
 
     }
 
-    public void loginUser(String email, String password) {
+    public boolean loginUser(String email, String password) {
         User user = this.getUserByEmail(email);
         if (user == null) {
             System.out.println("User does not exist!");
-            return;
+            return false;
         }
 
         if (!password.equals(user.getPassword())) {
             System.out.println("Wrong credentials!");
-            return;
+            return false;
         }
 
         currentUser = user;
+        return true;
     }
 
     private User getUserByEmail(String email) {

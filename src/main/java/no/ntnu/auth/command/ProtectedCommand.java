@@ -13,7 +13,7 @@ public abstract class ProtectedCommand implements Command {
         this.authController = authController;
     }
 
-    abstract void protectedExecute(String label, String[] args);
+    protected abstract void protectedExecute(String label, String[] args);
 
 
     /**
