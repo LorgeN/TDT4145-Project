@@ -24,6 +24,10 @@ public class CreateCourseCommand extends ProtectedCommand {
 
         CourseObjectManager manager = this.getApp().getCourseObjectManager();
         Course course = manager.createCourse(name, term, allowAnonymous);
+        if (course == null) {
+            System.out.println("Unable to create course!");
+            return;
+        }
 
         System.out.println("Course created:");
         System.out.println("  ID: " + course.getCourseId());

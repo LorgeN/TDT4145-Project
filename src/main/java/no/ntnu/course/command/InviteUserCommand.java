@@ -52,6 +52,11 @@ public class InviteUserCommand extends ProtectedCommand {
 
         boolean instructor = Boolean.parseBoolean(args[2]);
         CourseParticipant participant = manager.addParticipant(user.getEmail(), course.getCourseId(), instructor);
+        if (participant == null) {
+            System.out.println("Unable to add participant to course!");
+            return;
+        }
+
         System.out.println("Added participant to course " + course + ":");
         System.out.println("  Email: " + participant.getUser());
         System.out.println("  Instructor: " + participant.isInstructor());

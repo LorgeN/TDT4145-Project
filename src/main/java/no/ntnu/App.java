@@ -10,6 +10,7 @@ import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
 import no.ntnu.statistics.StatisticsController;
 import no.ntnu.statistics.command.StatisticCommand;
+import no.ntnu.tags.TagObjectManager;
 
 /**
  * Main class for the application
@@ -18,6 +19,7 @@ public class App {
 
     private final CommandLineRunner runner;
     private final CourseObjectManager courseObjectManager;
+    private final TagObjectManager tagObjectManager;
 
     private ConnectionManager connectionManager;
     private AuthController authController;
@@ -29,6 +31,8 @@ public class App {
         this.authController = new AuthController(this.getConnectionManager());
         this.statisticsController = new StatisticsController();
 
+        this.tagObjectManager = new TagObjectManager(this);
+
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
         this.runner.registerCommand("login", new LoginCommand(this.authController));
         this.runner.registerCommand("createuser", new CreateUserCommand(this.authController));
@@ -38,6 +42,10 @@ public class App {
 
     public CommandLineRunner getRunner() {
         return runner;
+    }
+
+    public TagObjectManager getTagObjectManager() {
+        return tagObjectManager;
     }
 
     public void startRunner() {
