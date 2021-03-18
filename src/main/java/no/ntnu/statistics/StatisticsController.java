@@ -91,6 +91,8 @@ public class StatisticsController {
             try (InputStreamReader inputStreamReader = new InputStreamReader(is); BufferedReader reader = new BufferedReader(inputStreamReader)) {
                 return reader.lines().collect(Collectors.joining("\n"));
             }
+        } else {
+            throw new IOException("Could not find the file");
         }
 
     }
