@@ -1,7 +1,7 @@
-package no.ntnu.entity.tags;
+package no.ntnu.tags;
 
 import no.ntnu.App;
-import no.ntnu.entity.tags.command.ViewTagCommand;
+import no.ntnu.tags.command.ViewTagCommand;
 import no.ntnu.mysql.ActiveDomainObjectManager;
 
 import java.sql.Connection;

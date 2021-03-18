@@ -1,4 +1,4 @@
-package no.ntnu.entity.tags.command;
+package no.ntnu.tags.command;
 
 import no.ntnu.command.Command;
 

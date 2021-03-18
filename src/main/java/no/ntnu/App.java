@@ -6,11 +6,11 @@ import no.ntnu.auth.command.CurrentUserCommand;
 import no.ntnu.auth.command.LoginCommand;
 import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
-import no.ntnu.entity.tags.TagObjectManager;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
 import no.ntnu.statistics.StatisticsController;
 import no.ntnu.statistics.command.StatisticCommand;
+import no.ntnu.tags.TagObjectManager;
 
 /**
  * Main class for the application
@@ -19,8 +19,8 @@ public class App {
 
     private final CommandLineRunner runner;
     private final CourseObjectManager courseObjectManager;
-
     private final TagObjectManager tagObjectManager;
+
     private ConnectionManager connectionManager;
     private AuthController authController;
     private StatisticsController statisticsController;
@@ -36,8 +36,8 @@ public class App {
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
         this.runner.registerCommand("login", new LoginCommand(this.authController));
         this.runner.registerCommand("createuser", new CreateUserCommand(this.authController));
-        this.runner.registerCommand("currentuser", new CurrentUserCommand(this.authController));
-        this.runner.registerCommand("stat", new StatisticCommand(this.authController, this.statisticsController));
+        this.runner.registerCommand("currentuser", new CurrentUserCommand(this));
+        this.runner.registerCommand("stat", new StatisticCommand(this));
     }
 
     public CommandLineRunner getRunner() {

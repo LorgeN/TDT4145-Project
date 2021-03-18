@@ -1,4 +1,4 @@
-package no.ntnu.entity.tags;
+package no.ntnu.tags;
 
 import java.util.Objects;
 

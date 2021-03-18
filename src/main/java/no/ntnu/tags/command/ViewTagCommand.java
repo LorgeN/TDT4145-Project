@@ -1,9 +1,9 @@
-package no.ntnu.entity.tags.command;
+package no.ntnu.tags.command;
 
 import no.ntnu.App;
 import no.ntnu.command.Command;
-import no.ntnu.entity.tags.Tag;
-import no.ntnu.entity.tags.TagObjectManager;
+import no.ntnu.tags.Tag;
+import no.ntnu.tags.TagObjectManager;
 
 import java.util.List;
 
