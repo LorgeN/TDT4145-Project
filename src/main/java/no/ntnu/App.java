@@ -5,6 +5,7 @@ import no.ntnu.auth.command.CreateUserCommand;
 import no.ntnu.auth.command.CurrentUserCommand;
 import no.ntnu.auth.command.LoginCommand;
 import no.ntnu.command.CommandLineRunner;
+import no.ntnu.course.CourseObjectManager;
 import no.ntnu.entity.tags.TagObjectManager;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
@@ -17,6 +18,8 @@ import no.ntnu.statistics.command.StatisticCommand;
 public class App {
 
     private final CommandLineRunner runner;
+    private final CourseObjectManager courseObjectManager;
+
     private final TagObjectManager tagObjectManager;
     private ConnectionManager connectionManager;
     private AuthController authController;
@@ -24,6 +27,7 @@ public class App {
 
     public App() {
         this.runner = new CommandLineRunner();
+        this.courseObjectManager = new CourseObjectManager(this);
         this.authController = new AuthController(this.getConnectionManager());
         this.statisticsController = new StatisticsController();
 
@@ -52,6 +56,14 @@ public class App {
         return connectionManager;
     }
 
+    public CourseObjectManager getCourseObjectManager() {
+        return courseObjectManager;
+    }
+
+    public StatisticsController getStatisticsController() {
+        return statisticsController;
+    }
+
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
         this.authController.setConnectionManager(connectionManager);
@@ -66,9 +78,9 @@ public class App {
             return;
         }
 
-        System.out.println("Connection successful! Creating tables...");
+        System.out.println("Connection to database successful! Ensuring tables are present...");
         this.connectionManager.makeTables();
-        System.out.println("Tables created!");
+        System.out.println("Finished checking tables!");
     }
 
     public void setAuthController(AuthController authController) {
