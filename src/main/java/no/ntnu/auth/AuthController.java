@@ -60,4 +60,8 @@ public class AuthController {
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
     }
+
+    public boolean isAuthenticated() {
+        return this.currentUser != null;
+    }
 }

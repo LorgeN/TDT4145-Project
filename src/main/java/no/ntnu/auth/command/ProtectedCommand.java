@@ -24,7 +24,7 @@ public abstract class ProtectedCommand implements Command {
      */
     @Override
     public void execute(String label, String[] args) {
-        if (this.authController.getCurrentUser() == null) {
+        if (!this.authController.isAuthenticated()) {
             System.out.println("You need to be logged in to run this command!");
             return;
         }
