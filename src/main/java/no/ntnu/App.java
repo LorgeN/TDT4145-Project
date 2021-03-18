@@ -38,6 +38,17 @@ public class App {
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
         this.authController.setConnectionManager(connectionManager);
+
+        if (this.connectionManager == null) {
+            return;
+        }
+
+        if (!this.connectionManager.testConnection()) {
+            System.out.println("Connection unsuccessful!");
+            return;
+        }
+
+        this.connectionManager.makeTables();
     }
 
     public void setAuthController(AuthController authController) {
@@ -47,4 +58,5 @@ public class App {
     public AuthController getAuthController() {
         return authController;
     }
+
 }
