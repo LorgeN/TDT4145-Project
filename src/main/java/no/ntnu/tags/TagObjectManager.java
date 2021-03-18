@@ -1,19 +1,24 @@
 package no.ntnu.tags;
 
 import no.ntnu.App;
-import no.ntnu.tags.command.ViewTagCommand;
+import no.ntnu.course.Course;
+import no.ntnu.course.CourseObjectManager;
 import no.ntnu.mysql.ActiveDomainObjectManager;
+import no.ntnu.tags.command.CreateTagCommand;
+import no.ntnu.tags.command.ViewTagsCommand;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TagObjectManager extends ActiveDomainObjectManager {
 
-    private static final String SELECT_TAGS_STATEMENT = "SELECT * FROM tag;";
+    private static final String SELECT_TAGS_STATEMENT = "SELECT * FROM tag NATURAL JOIN course;";
     private static final String SELECT_COURSE_TAGS_STATEMENT = "SELECT * FROM tag WHERE CourseId=?;";
     private static final String INSERT_TAG_STATEMENT = "INSERT INTO tag VALUES (?, ?);";
     private static final String DELETE_TAG_STATEMENT = "DELETE FROM tag WHERE CourseId = ? AND Name = ?;";
@@ -21,18 +26,31 @@ public class TagObjectManager extends ActiveDomainObjectManager {
     public TagObjectManager(App app) {
         super(app);
 
-        app.getRunner().registerCommand("viewtags", new ViewTagCommand(app));
+        app.getRunner().registerCommand("viewtags", new ViewTagsCommand(app));
+        app.getRunner().registerCommand("createtag", new CreateTagCommand(app));
     }
 
-    public List<Tag> getTags() {
+    public Map<Course, List<Tag>> getTags() {
+        CourseObjectManager courseManager = this.getApp().getCourseObjectManager();
+
         try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_TAGS_STATEMENT);
 
-            List<Tag> tags = new ArrayList<>();
+            Map<Course, List<Tag>> tags = new HashMap<>();
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                tags.add(this.fromResultSet(result));
+                Tag tag = this.fromResultSet(result);
+                Course course = courseManager.fromResultSet(result);
+
+                tags.compute(course, (c, courseTags) -> {
+                    if (courseTags == null) {
+                        courseTags = new ArrayList<>();
+                    }
+
+                    courseTags.add(tag);
+                    return courseTags;
+                });
             }
 
             return tags;
@@ -61,15 +79,18 @@ public class TagObjectManager extends ActiveDomainObjectManager {
         }
     }
 
-    public void saveTag(Tag tag) {
+    public Tag createTag(int courseId, String name) {
         try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(INSERT_TAG_STATEMENT);
-            statement.setInt(1, tag.getCourseId());
-            statement.setString(2, tag.getName());
+            statement.setInt(1, courseId);
+            statement.setString(2, name);
 
             statement.execute();
+
+            return new Tag(courseId, name);
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
