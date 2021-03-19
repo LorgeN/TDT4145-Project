@@ -12,6 +12,7 @@ public class Folder {
     private int folderId;
     private Integer parentFolderId;
     private int courseId;
+    private final String queryString = "INSERT INTO Folder(Name, CourseId, ParentFolderId) VALUES(?, ?, ?);";
 
     public Folder(String name, int courseId, Integer parentFolderId) {
         this.name = name;
@@ -20,8 +21,6 @@ public class Folder {
     }
 
     public void save(Connection connection) throws SQLException {
-        String queryString = "INSERT INTO Folder(Name, CourseId, ParentFolderId) VALUES(?, ?, ?);";
-
         try (PreparedStatement statement = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
             statement.setInt(2, courseId);
