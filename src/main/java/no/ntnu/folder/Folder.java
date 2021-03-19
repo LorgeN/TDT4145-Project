@@ -41,4 +41,22 @@ public class Folder {
            throw e;
         }
     }
+
+    public int getFolderId() {
+        return folderId;
+    }
+
+    public void setFolderId(int folderId) {
+        this.folderId = folderId;
+    }
+
+    @Override
+    public String toString() {
+        return "Folder{" +
+            "name='" + name + '\'' +
+            ", folderId=" + folderId +
+            ", parentFolderId=" + parentFolderId +
+            ", courseId=" + courseId +
+            '}';
+    }
 }

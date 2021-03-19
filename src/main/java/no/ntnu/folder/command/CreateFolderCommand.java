@@ -4,6 +4,7 @@ import no.ntnu.App;
 import no.ntnu.auth.User;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.course.Course;
+import no.ntnu.folder.Folder;
 import no.ntnu.folder.FolderController;
 import no.ntnu.util.CommandUtil;
 
@@ -13,9 +14,9 @@ import java.util.List;
 public class CreateFolderCommand extends ProtectedCommand {
     private final FolderController folderController;
 
-    public CreateFolderCommand(FolderController folderController, App app) {
+    public CreateFolderCommand(App app) {
         super(app);
-        this.folderController = folderController;
+        this.folderController = app.getFolderController();
     }
 
     @Override
@@ -26,17 +27,6 @@ public class CreateFolderCommand extends ProtectedCommand {
     @Override
     public String getDescription() {
         return "Creates a folder with the given values. If no parentFolderId is provided, this is a top level folder";
-    }
-
-    private Integer acceptInt(String label, String arg) {
-        Integer argAsInt = null;
-        try {
-            argAsInt = Integer.parseInt(arg);
-        } catch (NumberFormatException e){
-            System.out.printf("Invalid %s provided.", label);
-        }
-
-        return argAsInt;
     }
 
     @Override
@@ -59,7 +49,14 @@ public class CreateFolderCommand extends ProtectedCommand {
 
         Integer parentFolderId = null;
         if (args.length == 3) {
-            parentFolderId = acceptInt("parentFolderId", args[2]);
+            String parentFolderName = args[2];
+            List<Folder> folders = folderController.getFoldersByName(parentFolderName);
+            parentFolderId = CommandUtil.selectOptions(folders).getFolderId();
+
+            if (folders == null) {
+               System.out.println("Could not find any potential parent folders with that name");
+               return;
+            }
         }
 
         try {

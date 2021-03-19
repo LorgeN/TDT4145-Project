@@ -40,7 +40,7 @@ public class App {
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
         this.runner.registerCommand("login", new LoginCommand(this.authController));
         this.runner.registerCommand("createuser", new CreateUserCommand(this.authController));
-        this.runner.registerCommand("createfolder", new CreateFolderCommand(this.folderController, this));
+        this.runner.registerCommand("createfolder", new CreateFolderCommand(this));
         this.runner.registerCommand("currentuser", new CurrentUserCommand(this));
         this.runner.registerCommand("stat", new StatisticCommand(this));
     }
@@ -67,6 +67,10 @@ public class App {
 
     public StatisticsController getStatisticsController() {
         return statisticsController;
+    }
+
+    public FolderController getFolderController() {
+        return folderController;
     }
 
     public void setConnectionManager(ConnectionManager connectionManager) {
