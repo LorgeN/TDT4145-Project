@@ -13,6 +13,10 @@ public abstract class ActiveDomainObjectManager {
         this.app = app;
     }
 
+    public App getApp() {
+        return app;
+    }
+
     public Connection getConnection() throws SQLException {
         return this.app.getConnectionManager().getConnection();
     }
