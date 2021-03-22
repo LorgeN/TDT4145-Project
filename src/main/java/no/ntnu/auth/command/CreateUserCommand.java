@@ -1,6 +1,6 @@
 package no.ntnu.auth.command;
 
-import no.ntnu.auth.AuthController;
+import no.ntnu.App;
 import no.ntnu.command.Command;
 
 import java.sql.SQLException;
@@ -10,9 +10,10 @@ import java.sql.SQLException;
  */
 public class CreateUserCommand implements Command {
 
-    private final AuthController authController;
-    public CreateUserCommand(AuthController authController) {
-        this.authController = authController;
+    private final App app;
+
+    public CreateUserCommand(App app) {
+        this.app = app;
     }
 
     @Override
@@ -37,7 +38,7 @@ public class CreateUserCommand implements Command {
         String password = args[2];
 
         try {
-            this.authController.createUser(email, name, password);
+            this.app.getAuthController().createUser(email, name, password);
             System.out.println("User created!");
         } catch (SQLException e) {
             System.out.println("Could not create the user!");

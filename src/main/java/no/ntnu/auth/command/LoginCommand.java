@@ -1,5 +1,6 @@
 package no.ntnu.auth.command;
 
+import no.ntnu.App;
 import no.ntnu.auth.AuthController;
 import no.ntnu.command.Command;
 
@@ -8,11 +9,12 @@ import no.ntnu.command.Command;
  */
 public class LoginCommand implements Command {
 
-    private final AuthController authController;
+    private final App app;
 
-    public LoginCommand(AuthController authController) {
-        this.authController = authController;
+    public LoginCommand(App app) {
+        this.app = app;
     }
+
 
     @Override
     public String getUsage() {
@@ -31,6 +33,7 @@ public class LoginCommand implements Command {
             return;
         }
 
+        AuthController authController = this.app.getAuthController();
         authController.loginUser(args[0], args[1]);
 
         System.out.println("Succesfully logged in user: " + authController.getCurrentUser());
