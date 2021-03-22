@@ -6,6 +6,7 @@ import no.ntnu.course.command.CreateCourseCommand;
 import no.ntnu.course.command.InviteUserCommand;
 import no.ntnu.course.command.ViewCoursesCommand;
 import no.ntnu.mysql.ActiveDomainObjectManager;
+import no.ntnu.util.CommandUtil;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -24,6 +25,8 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
             " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE IsInstructor=VALUES(IsInstructor);";
     private static final String SELECT_USER_COURSES_STATEMENT = "SELECT p.IsInstructor, c.* FROM " +
             "participant p NATURAL JOIN course c WHERE p.User = ?;";
+
+    private Course selectedCourse;
 
     public CourseObjectManager(App app) {
         super(app);
@@ -69,6 +72,11 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void selectCourse(String name){
+        List<Course> potentialCourses = getCoursesByName(name);
+        this.selectedCourse = CommandUtil.selectOptions(potentialCourses);
     }
 
     public List<Course> getCoursesByName(String name) {

@@ -4,6 +4,7 @@ import no.ntnu.auth.AuthController;
 import no.ntnu.auth.command.*;
 import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
+import no.ntnu.course.command.SelectCourseCommand;
 import no.ntnu.folder.FolderController;
 import no.ntnu.folder.command.CreateFolderCommand;
 import no.ntnu.mysql.ConnectionManager;
@@ -44,6 +45,7 @@ public class App {
         this.runner.registerCommand("logout", new LogoutUserCommand(this));
         this.runner.registerCommand("printusers", new AllUsersCommand(this));
         this.runner.registerCommand("stat", new StatisticCommand(this));
+        this.runner.registerCommand("selectcourse", new SelectCourseCommand(this));
     }
 
     public CommandLineRunner getRunner() {
