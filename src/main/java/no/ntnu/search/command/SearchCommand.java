@@ -2,9 +2,8 @@ package no.ntnu.search.command;
 
 import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
-import no.ntnu.command.Command;
 import no.ntnu.course.Course;
-import no.ntnu.search.SearchController;
+import no.ntnu.search.SearchObjectManager;
 
 public class SearchCommand extends ProtectedCommand {
     public SearchCommand(App app) {
@@ -17,7 +16,7 @@ public class SearchCommand extends ProtectedCommand {
            System.out.println("Please specify a keyword");
        }
 
-       SearchController controller = this.getApp().getSearchController();
+       SearchObjectManager controller = this.getApp().getSearchController();
        String keyword = args[0];
        Course course = this.getApp().getCourseObjectManager().getSelectedCourse();
        if (course == null){

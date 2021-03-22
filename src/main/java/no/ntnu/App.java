@@ -9,7 +9,7 @@ import no.ntnu.folder.FolderObjectManager;
 import no.ntnu.folder.command.CreateFolderCommand;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
-import no.ntnu.search.SearchController;
+import no.ntnu.search.SearchObjectManager;
 import no.ntnu.search.command.SearchCommand;
 import no.ntnu.statistics.StatisticsController;
 import no.ntnu.statistics.command.StatisticCommand;
@@ -28,14 +28,14 @@ public class App {
     private UserObjectManager userObjectManager;
     private FolderObjectManager folderObjectManager;
     private StatisticsController statisticsController;
-    private SearchController searchController;
+    private SearchObjectManager searchObjectManager;
 
     public App() {
         this.runner = new CommandLineRunner();
         this.courseObjectManager = new CourseObjectManager(this);
         this.userObjectManager = new UserObjectManager(this);
         this.statisticsController = new StatisticsController();
-        this.searchController = new SearchController();
+        this.searchObjectManager = new SearchObjectManager(this);
 
         this.tagObjectManager = new TagObjectManager(this);
         this.folderObjectManager = new FolderObjectManager(this);
@@ -77,8 +77,8 @@ public class App {
         return statisticsController;
     }
 
-    public SearchController getSearchController() {
-        return searchController;
+    public SearchObjectManager getSearchController() {
+        return searchObjectManager;
     }
 
     public FolderObjectManager getFolderController() {
@@ -89,7 +89,7 @@ public class App {
         this.connectionManager = connectionManager;
         this.userObjectManager.setConnectionManager(connectionManager);
         this.statisticsController.setConnectionManager(connectionManager);
-        this.searchController.setConnectionManager(connectionManager);
+        this.searchObjectManager.setConnectionManager(connectionManager);
         this.folderObjectManager.setConnectionManager(connectionManager);
 
         if (this.connectionManager == null) {
