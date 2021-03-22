@@ -8,6 +8,8 @@ import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
+import no.ntnu.search.SearchController;
+import no.ntnu.search.command.SearchCommand;
 import no.ntnu.statistics.StatisticsController;
 import no.ntnu.statistics.command.StatisticCommand;
 import no.ntnu.tags.TagObjectManager;
@@ -24,12 +26,14 @@ public class App {
     private ConnectionManager connectionManager;
     private AuthController authController;
     private StatisticsController statisticsController;
+    private SearchController searchController;
 
     public App() {
         this.runner = new CommandLineRunner();
         this.courseObjectManager = new CourseObjectManager(this);
         this.authController = new AuthController(this.getConnectionManager());
         this.statisticsController = new StatisticsController();
+        this.searchController = new SearchController();
 
         this.tagObjectManager = new TagObjectManager(this);
 
@@ -38,6 +42,7 @@ public class App {
         this.runner.registerCommand("createuser", new CreateUserCommand(this.authController));
         this.runner.registerCommand("currentuser", new CurrentUserCommand(this));
         this.runner.registerCommand("stat", new StatisticCommand(this));
+        this.runner.registerCommand("search", new SearchCommand(this));
     }
 
     public CommandLineRunner getRunner() {
@@ -64,10 +69,15 @@ public class App {
         return statisticsController;
     }
 
+    public SearchController getSearchController() {
+        return searchController;
+    }
+
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
         this.authController.setConnectionManager(connectionManager);
         this.statisticsController.setConnectionManager(connectionManager);
+        this.searchController.setConnectionManager(connectionManager);
 
         if (this.connectionManager == null) {
             return;
