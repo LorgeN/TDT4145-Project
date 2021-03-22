@@ -31,7 +31,7 @@ public class CreateFolderCommand extends ProtectedCommand {
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        if (args.length < 2){
+        if (args.length < 2) {
             System.out.println("Please enter at least a name and courseName\n");
             return;
         }
@@ -50,18 +50,18 @@ public class CreateFolderCommand extends ProtectedCommand {
         Integer parentFolderId = null;
         if (args.length == 3) {
             String parentFolderName = args[2];
-            List<Folder> folders = folderController.getFoldersByName(parentFolderName);
+            List<Folder> folders = folderController.getFoldersByName(course.getCourseId(), parentFolderName);
             parentFolderId = CommandUtil.selectOptions(folders).getFolderId();
 
             if (folders == null) {
-               System.out.println("Could not find any potential parent folders with that name");
-               return;
+                System.out.println("Could not find any potential parent folders with that name");
+                return;
             }
         }
 
         try {
             this.folderController.createFolder(name, course.getCourseId(), parentFolderId);
-        } catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println("Could not create the folder!");
         } catch (NullPointerException e) {
             e.printStackTrace();
