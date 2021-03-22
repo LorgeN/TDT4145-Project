@@ -18,7 +18,7 @@ import java.util.Map;
 
 public class TagObjectManager extends ActiveDomainObjectManager {
 
-    private static final String SELECT_TAGS_STATEMENT = "SELECT * FROM tag NATURAL JOIN course;";
+    private static final String SELECT_TAGS_STATEMENT = "SELECT tag.Name AS tag, course.* FROM tag INNER JOIN course ON tag.CourseId = course.CourseId;";
     private static final String SELECT_COURSE_TAGS_STATEMENT = "SELECT * FROM tag WHERE CourseId=?;";
     private static final String INSERT_TAG_STATEMENT = "INSERT INTO tag VALUES (?, ?);";
     private static final String DELETE_TAG_STATEMENT = "DELETE FROM tag WHERE CourseId = ? AND Name = ?;";
@@ -40,8 +40,8 @@ public class TagObjectManager extends ActiveDomainObjectManager {
 
             ResultSet result = statement.executeQuery();
             while (result.next()) {
-                Tag tag = this.fromResultSet(result);
                 Course course = courseManager.fromResultSet(result);
+                Tag tag = new Tag(course.getCourseId(), result.getString("tag"));
 
                 tags.compute(course, (c, courseTags) -> {
                     if (courseTags == null) {
