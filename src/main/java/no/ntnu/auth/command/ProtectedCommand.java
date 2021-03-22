@@ -1,20 +1,24 @@
 package no.ntnu.auth.command;
 
-import no.ntnu.auth.AuthController;
+import no.ntnu.App;
 import no.ntnu.command.Command;
 
 /**
  * An extension of Command that can only be called when the given authController has a logged in user
  */
 public abstract class ProtectedCommand implements Command {
-    protected AuthController authController;
 
-    public ProtectedCommand(AuthController authController) {
-        this.authController = authController;
+    private final App app;
+
+    public ProtectedCommand(App app) {
+        this.app = app;
     }
 
-    abstract void protectedExecute(String label, String[] args);
+    public App getApp() {
+        return app;
+    }
 
+    protected abstract void protectedExecute(String label, String[] args);
 
     /**
      * This ensures that only logged in users will be able to run the command
@@ -24,15 +28,11 @@ public abstract class ProtectedCommand implements Command {
      */
     @Override
     public void execute(String label, String[] args) {
-        if (!this.authController.isAuthenticated()) {
+        if (!this.getApp().getAuthController().isAuthenticated()) {
             System.out.println("You need to be logged in to run this command!");
             return;
         }
 
         this.protectedExecute(label, args);
-    }
-
-    public void setAuthController(AuthController authController) {
-        this.authController = authController;
     }
 }
