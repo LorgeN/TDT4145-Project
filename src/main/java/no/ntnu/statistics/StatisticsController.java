@@ -10,17 +10,48 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class StatisticsController {
 
+    // Use insert ignore so we dont have to actually check if this exists, which saves 1 query
+    private static final String INSERT_READ_STATEMENT = "INSERT IGNORE INTO postread(User, PostId) VALUES (?, ?);";
+    private static final String INSERT_LOGIN_STATEMENT = "INSERT IGNORE INTO activedays(User, Date) VALUES (?, NOW());";
+
     private ConnectionManager connectionManager;
 
+    public void registerLogin(String user) {
+        try (Connection connection = this.connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(INSERT_LOGIN_STATEMENT);
+            statement.setString(1, user);
+
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void readPost(String user, List<Integer> posts) {
+        try (Connection connection = this.connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(INSERT_READ_STATEMENT);
+            statement.setString(1, user);
+
+            for (Integer post : posts) {
+                statement.setInt(2, post);
+                statement.addBatch();
+            }
+
+            statement.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Prints out the statistics according to the 5th usecase
      */
-    public void printStatistics() {
+    public void printStatistics(int courseId) {
 
         String queryString;
         try {
@@ -30,9 +61,10 @@ public class StatisticsController {
             return;
         }
 
-        try (Connection connection = this.connectionManager.getConnection(); PreparedStatement statement = connection.prepareStatement(queryString)) {
-            statement.setInt(1, 1);
-            statement.setInt(2, 1);
+        try (Connection connection = this.connectionManager.getConnection();
+             PreparedStatement statement = connection.prepareStatement(queryString)) {
+            statement.setInt(1, courseId);
+            statement.setInt(2, courseId);
 
             ResultSet result = statement.executeQuery();
 
@@ -88,7 +120,8 @@ public class StatisticsController {
     private String getQuery() throws IOException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("no/ntnu/statistics/statistic_query.sql");
         if (is != null) {
-            try (InputStreamReader inputStreamReader = new InputStreamReader(is); BufferedReader reader = new BufferedReader(inputStreamReader)) {
+            try (InputStreamReader inputStreamReader = new InputStreamReader(is);
+                 BufferedReader reader = new BufferedReader(inputStreamReader)) {
                 return reader.lines().collect(Collectors.joining("\n"));
             }
         } else {

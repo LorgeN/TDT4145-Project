@@ -14,3 +14,5 @@
 # Maven
 log/
 target/
+/src/main/java/META-INF/MANIFEST.MF
+/out/artifacts/tdt4145_project_jar/tdt4145-project.jar

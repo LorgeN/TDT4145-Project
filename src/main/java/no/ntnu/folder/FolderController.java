@@ -26,10 +26,12 @@ public class FolderController {
         folder.save(conn);
     }
 
-    public List<Folder> getFoldersByName(String name) {
-        String queryString = "SELECT * FROM Folder WHERE Name = ?";
+    public List<Folder> getFoldersByName(int courseId, String name) {
+        String queryString = "SELECT * FROM Folder WHERE Name = ? AND CourseId = ?;";
         try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(queryString)) {
             statement.setString(1, name);
+            statement.setInt(2, courseId);
+
             ResultSet result = statement.executeQuery();
             List<Folder> folders = new ArrayList<>();
             while (result.next()){
