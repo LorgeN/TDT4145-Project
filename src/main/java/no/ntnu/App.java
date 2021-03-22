@@ -5,7 +5,7 @@ import no.ntnu.auth.command.*;
 import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
 import no.ntnu.course.command.SelectCourseCommand;
-import no.ntnu.folder.FolderController;
+import no.ntnu.folder.FolderObjectManager;
 import no.ntnu.folder.command.CreateFolderCommand;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
@@ -26,7 +26,7 @@ public class App {
 
     private ConnectionManager connectionManager;
     private UserObjectManager userObjectManager;
-    private FolderController folderController;
+    private FolderObjectManager folderObjectManager;
     private StatisticsController statisticsController;
     private SearchController searchController;
 
@@ -38,7 +38,7 @@ public class App {
         this.searchController = new SearchController();
 
         this.tagObjectManager = new TagObjectManager(this);
-        this.folderController = new FolderController(this.getConnectionManager());
+        this.folderObjectManager = new FolderObjectManager(this);
 
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
         this.runner.registerCommand("login", new LoginCommand(this));
@@ -81,8 +81,8 @@ public class App {
         return searchController;
     }
 
-    public FolderController getFolderController() {
-        return folderController;
+    public FolderObjectManager getFolderController() {
+        return folderObjectManager;
     }
 
     public void setConnectionManager(ConnectionManager connectionManager) {
@@ -90,7 +90,7 @@ public class App {
         this.userObjectManager.setConnectionManager(connectionManager);
         this.statisticsController.setConnectionManager(connectionManager);
         this.searchController.setConnectionManager(connectionManager);
-        this.folderController.setConnectionManager(connectionManager);
+        this.folderObjectManager.setConnectionManager(connectionManager);
 
         if (this.connectionManager == null) {
             return;

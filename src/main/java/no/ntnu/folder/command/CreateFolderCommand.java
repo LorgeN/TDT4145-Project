@@ -1,22 +1,21 @@
 package no.ntnu.folder.command;
 
 import no.ntnu.App;
-import no.ntnu.auth.User;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.course.Course;
 import no.ntnu.folder.Folder;
-import no.ntnu.folder.FolderController;
+import no.ntnu.folder.FolderObjectManager;
 import no.ntnu.util.CommandUtil;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class CreateFolderCommand extends ProtectedCommand {
-    private final FolderController folderController;
+    private final FolderObjectManager folderObjectManager;
 
     public CreateFolderCommand(App app) {
         super(app);
-        this.folderController = app.getFolderController();
+        this.folderObjectManager = app.getFolderController();
     }
 
     @Override
@@ -47,7 +46,7 @@ public class CreateFolderCommand extends ProtectedCommand {
         Integer parentFolderId = null;
         if (args.length == 3) {
             String parentFolderName = args[2];
-            List<Folder> folders = folderController.getFoldersByName(parentFolderName);
+            List<Folder> folders = folderObjectManager.getFoldersByName(parentFolderName);
             parentFolderId = CommandUtil.selectOptions(folders).getFolderId();
 
             if (folders == null) {
@@ -57,7 +56,7 @@ public class CreateFolderCommand extends ProtectedCommand {
         }
 
         try {
-            this.folderController.createFolder(name, courseId, parentFolderId);
+            this.folderObjectManager.createFolder(name, courseId, parentFolderId);
         } catch (SQLException e){
             System.out.println("Could not create the folder!");
         } catch (NullPointerException e) {
