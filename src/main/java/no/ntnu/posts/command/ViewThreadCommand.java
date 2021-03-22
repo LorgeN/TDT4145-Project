@@ -52,7 +52,12 @@ public class ViewThreadCommand extends ProtectedCommand {
 
 
         PostObjectManager manager = this.getApp().getPostObjectManager();
-        Thread thread = manager.getThread(threadId);
+        Course selectedCourse = this.getApp().getCourseObjectManager().getSelectedCourse();
+        Integer courseId = null;
+        if (selectedCourse != null){
+           courseId = selectedCourse.getCourseId();
+        }
+        Thread thread = manager.getThread(threadId, courseId);
         if (thread == null) {
             System.out.println("No thread with that ID exists!");
             return;
@@ -65,7 +70,6 @@ public class ViewThreadCommand extends ProtectedCommand {
         this.getApp().getStatisticsController().readPost(user.getEmail(), posts.stream()
                 .map(Post::getPostId).collect(Collectors.toList()));
 
-        Course selectedCourse = this.getApp().getCourseObjectManager().getSelectedCourse();
         String ansiColor = ANSI_WHITE;
         String color = "To get a color you need to select a course";
 
