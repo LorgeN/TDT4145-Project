@@ -1,9 +1,7 @@
 package no.ntnu;
 
 import no.ntnu.auth.AuthController;
-import no.ntnu.auth.command.CreateUserCommand;
-import no.ntnu.auth.command.CurrentUserCommand;
-import no.ntnu.auth.command.LoginCommand;
+import no.ntnu.auth.command.*;
 import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
 import no.ntnu.mysql.ConnectionManager;
@@ -34,9 +32,10 @@ public class App {
         this.tagObjectManager = new TagObjectManager(this);
 
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
-        this.runner.registerCommand("login", new LoginCommand(this.authController));
-        this.runner.registerCommand("createuser", new CreateUserCommand(this.authController));
-        this.runner.registerCommand("currentuser", new CurrentUserCommand(this));
+        this.runner.registerCommand("login", new LoginCommand(this));
+        this.runner.registerCommand("createuser", new CreateUserCommand(this));
+        this.runner.registerCommand("logout", new LogoutUserCommand(this));
+        this.runner.registerCommand("printusers", new AllUsersCommand(this));
         this.runner.registerCommand("stat", new StatisticCommand(this));
     }
 
