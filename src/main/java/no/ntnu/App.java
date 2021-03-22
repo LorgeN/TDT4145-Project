@@ -1,6 +1,6 @@
 package no.ntnu;
 
-import no.ntnu.auth.AuthController;
+import no.ntnu.auth.UserObjectManager;
 import no.ntnu.auth.command.*;
 import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
@@ -25,7 +25,7 @@ public class App {
     private final TagObjectManager tagObjectManager;
 
     private ConnectionManager connectionManager;
-    private AuthController authController;
+    private UserObjectManager userObjectManager;
     private FolderController folderController;
     private StatisticsController statisticsController;
     private SearchController searchController;
@@ -33,7 +33,7 @@ public class App {
     public App() {
         this.runner = new CommandLineRunner();
         this.courseObjectManager = new CourseObjectManager(this);
-        this.authController = new AuthController(this.getConnectionManager());
+        this.userObjectManager = new UserObjectManager(this);
         this.statisticsController = new StatisticsController();
         this.searchController = new SearchController();
 
@@ -87,7 +87,7 @@ public class App {
 
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
-        this.authController.setConnectionManager(connectionManager);
+        this.userObjectManager.setConnectionManager(connectionManager);
         this.statisticsController.setConnectionManager(connectionManager);
         this.searchController.setConnectionManager(connectionManager);
         this.folderController.setConnectionManager(connectionManager);
@@ -106,12 +106,12 @@ public class App {
         System.out.println("Finished checking tables!");
     }
 
-    public void setAuthController(AuthController authController) {
-        this.authController = authController;
+    public void setAuthController(UserObjectManager userObjectManager) {
+        this.userObjectManager = userObjectManager;
     }
 
-    public AuthController getAuthController() {
-        return authController;
+    public UserObjectManager getAuthController() {
+        return userObjectManager;
     }
 
 }
