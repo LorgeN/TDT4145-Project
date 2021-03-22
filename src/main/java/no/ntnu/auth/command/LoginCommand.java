@@ -36,7 +36,6 @@ public class LoginCommand implements Command {
         AuthController authController = this.app.getAuthController();
         authController.loginUser(args[0], args[1]);
 
-        System.out.println("Succesfully logged in user: " + authController.getCurrentUser());
         if (authController.loginUser(args[0], args[1])) {
             System.out.println("Succesfully logged in user: " + authController.getCurrentUser());
         }
