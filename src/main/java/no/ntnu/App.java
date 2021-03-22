@@ -1,11 +1,11 @@
 package no.ntnu;
 
 import no.ntnu.auth.AuthController;
-import no.ntnu.auth.command.CreateUserCommand;
-import no.ntnu.auth.command.CurrentUserCommand;
-import no.ntnu.auth.command.LoginCommand;
+import no.ntnu.auth.command.*;
 import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
+import no.ntnu.folder.FolderController;
+import no.ntnu.folder.command.CreateFolderCommand;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
 import no.ntnu.statistics.StatisticsController;
@@ -23,6 +23,7 @@ public class App {
 
     private ConnectionManager connectionManager;
     private AuthController authController;
+    private FolderController folderController;
     private StatisticsController statisticsController;
 
     public App() {
@@ -32,11 +33,16 @@ public class App {
         this.statisticsController = new StatisticsController();
 
         this.tagObjectManager = new TagObjectManager(this);
+        this.folderController = new FolderController(this.getConnectionManager());
 
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
-        this.runner.registerCommand("login", new LoginCommand(this.authController));
-        this.runner.registerCommand("createuser", new CreateUserCommand(this.authController));
+        this.runner.registerCommand("login", new LoginCommand(this));
+        this.runner.registerCommand("createfolder", new CreateFolderCommand(this));
         this.runner.registerCommand("currentuser", new CurrentUserCommand(this));
+        this.runner.registerCommand("login", new LoginCommand(this));
+        this.runner.registerCommand("createuser", new CreateUserCommand(this));
+        this.runner.registerCommand("logout", new LogoutUserCommand(this));
+        this.runner.registerCommand("printusers", new AllUsersCommand(this));
         this.runner.registerCommand("stat", new StatisticCommand(this));
     }
 
@@ -64,10 +70,15 @@ public class App {
         return statisticsController;
     }
 
+    public FolderController getFolderController() {
+        return folderController;
+    }
+
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
         this.authController.setConnectionManager(connectionManager);
         this.statisticsController.setConnectionManager(connectionManager);
+        this.folderController.setConnectionManager(connectionManager);
 
         if (this.connectionManager == null) {
             return;

@@ -33,6 +33,7 @@ public class User {
         }
     }
 
+
     public String getName() {
         return name;
     }
@@ -80,9 +81,9 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return "" +
+                email + ": " +
+                name;
+
     }
 }
