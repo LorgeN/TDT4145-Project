@@ -3,6 +3,7 @@ package no.ntnu.search.command;
 import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.command.Command;
+import no.ntnu.course.Course;
 import no.ntnu.search.SearchController;
 
 public class SearchCommand extends ProtectedCommand {
@@ -18,7 +19,12 @@ public class SearchCommand extends ProtectedCommand {
 
        SearchController controller = this.getApp().getSearchController();
        String keyword = args[0];
-       controller.search(keyword);
+       Course course = this.getApp().getCourseObjectManager().getSelectedCourse();
+       if (course == null){
+           System.out.println("You have to select a course to search for posts!");
+           return;
+       }
+       controller.search(keyword, course.getCourseId());
     }
 
     @Override

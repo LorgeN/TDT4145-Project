@@ -9,21 +9,25 @@ import java.sql.SQLException;
 
 public class SearchController {
     private ConnectionManager connectionManager;
-    private static final String SEARCH_STRING = "SELECT PostId FROM Post WHERE Text LIKE ?";
+    private static final String SEARCH_STRING = "SELECT PostId FROM Post P JOIN Thread T ON P.ThreadId = T.ThreadId WHERE P.Text LIKE ? AND T.CourseId = ?";
 
     /**
      * Searches for posts containing keyword as specified in usecase 4
      * @param keyword include only posts with text containing this keyword
      */
-    public void search(String keyword){
+    public void search(String keyword, int courseId){
         try (Connection connection = this.connectionManager.getConnection(); PreparedStatement  statement = connection.prepareStatement(SEARCH_STRING)){
             keyword = "%" + keyword + "%";
             statement.setString(1, keyword);
+            statement.setInt(2, courseId);
             ResultSet results = statement.executeQuery();
 
+            int index = 1;
+            System.out.println("Posts containing " + keyword + ": ");
             while (results.next()){
                 int postId = results.getInt("PostId");
-                System.out.println(postId);
+                System.out.println("\t" + index + ". PostId: " + postId);
+                index++;
             }
 
         } catch (SQLException e){
