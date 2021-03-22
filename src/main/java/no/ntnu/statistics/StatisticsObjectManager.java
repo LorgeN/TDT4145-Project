@@ -1,5 +1,7 @@
 package no.ntnu.statistics;
 
+import no.ntnu.App;
+import no.ntnu.mysql.ActiveDomainObjectManager;
 import no.ntnu.mysql.ConnectionManager;
 
 import java.io.BufferedReader;
@@ -12,9 +14,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.stream.Collectors;
 
-public class StatisticsController {
+public class StatisticsObjectManager extends ActiveDomainObjectManager {
 
     private ConnectionManager connectionManager;
+
+    public StatisticsObjectManager(App app) {
+        super(app);
+    }
 
 
     /**

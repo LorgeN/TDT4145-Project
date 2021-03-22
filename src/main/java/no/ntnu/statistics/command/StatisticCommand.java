@@ -2,20 +2,20 @@ package no.ntnu.statistics.command;
 
 import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
-import no.ntnu.statistics.StatisticsController;
+import no.ntnu.statistics.StatisticsObjectManager;
 
 public class StatisticCommand extends ProtectedCommand {
 
-    private final StatisticsController statisticsController;
+    private final StatisticsObjectManager statisticsObjectManager;
 
     public StatisticCommand(App app) {
         super(app);
-        this.statisticsController = app.getStatisticsController();
+        this.statisticsObjectManager = app.getStatisticsController();
     }
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        this.statisticsController.printStatistics();
+        this.statisticsObjectManager.printStatistics();
     }
 
     @Override
