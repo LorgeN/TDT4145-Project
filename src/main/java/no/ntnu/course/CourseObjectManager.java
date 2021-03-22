@@ -74,6 +74,10 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    public Course getSelectedCourse() {
+        return selectedCourse;
+    }
+
     public void selectCourse(String name){
         List<Course> potentialCourses = getCoursesByName(name);
         this.selectedCourse = CommandUtil.selectOptions(potentialCourses);
