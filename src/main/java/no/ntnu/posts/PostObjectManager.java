@@ -54,10 +54,12 @@ public class PostObjectManager extends ActiveDomainObjectManager {
         String query = courseId == null? SELECT_THREAD_STATEMENT : SELECT_THREAD_REPLY_STATUS_STATEMENT;
         try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
+            int threadIndex = 1;
             if (courseId != null){
                 statement.setInt(1, courseId);
+                threadIndex = 2;
             }
-            statement.setInt(2, threadId);
+            statement.setInt(threadIndex, threadId);
 
             ResultSet result = statement.executeQuery();
             if (!result.next()) {
