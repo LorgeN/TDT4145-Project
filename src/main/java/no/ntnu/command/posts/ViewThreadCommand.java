@@ -65,7 +65,7 @@ public class ViewThreadCommand extends ProtectedCommand {
 
         List<Post> posts = manager.getPosts(threadId);
 
-        User user = this.getApp().getAuthController().getCurrentUser();
+        User user = this.getApp().getUserManager().getCurrentUser();
 
         this.getApp().getStatisticsManager().readPost(user.getEmail(), posts.stream()
                 .map(Post::getPostId).collect(Collectors.toList()));

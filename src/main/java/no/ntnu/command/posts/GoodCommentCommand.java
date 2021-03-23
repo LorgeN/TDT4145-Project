@@ -15,7 +15,7 @@ public class GoodCommentCommand extends ProtectedCommand {
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        User user = this.getApp().getAuthController().getCurrentUser();
+        User user = this.getApp().getUserManager().getCurrentUser();
         PostObjectManager postObjectManager = this.getApp().getPostObjectManager();
         Post post = postObjectManager.getPostById(Integer.parseInt(args[0]));
         if (post == null) {

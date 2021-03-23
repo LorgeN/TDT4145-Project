@@ -2,6 +2,11 @@ package no.ntnu.command.course;
 
 import no.ntnu.App;
 import no.ntnu.command.auth.ProtectedCommand;
+import no.ntnu.entity.Course;
+import no.ntnu.manager.CourseObjectManager;
+import no.ntnu.util.CommandUtil;
+
+import java.util.List;
 
 public class SelectCourseCommand extends ProtectedCommand {
     public SelectCourseCommand(App app) {
@@ -10,12 +15,22 @@ public class SelectCourseCommand extends ProtectedCommand {
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        if (args.length < 1){
+        if (args.length < 1) {
             System.out.println("Please provide a course name");
             return;
         }
+
         String name = args[0];
-        this.getApp().getCourseObjectManager().selectCourse(name);
+        CourseObjectManager manager = this.getApp().getCourseObjectManager();
+        List<Course> courses = manager.getCoursesByName(name);
+        Course course = CommandUtil.selectOptions(courses);
+        if (course == null) {
+            System.out.println("No course by that name found!");
+            return;
+        }
+
+        manager.selectCourse(course);
+        System.out.println(course + " selected!");
     }
 
     @Override

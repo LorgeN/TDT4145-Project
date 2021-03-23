@@ -25,7 +25,7 @@ public class InviteUserCommand extends ProtectedCommand {
             return;
         }
 
-        UserObjectManager userObjectManager = this.getApp().getAuthController();
+        UserObjectManager userObjectManager = this.getApp().getUserManager();
 
         String userEmail = args[0];
         User user = userObjectManager.getUserByEmail(userEmail);

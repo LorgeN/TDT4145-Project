@@ -1,10 +1,9 @@
 package no.ntnu.manager;
 
 import no.ntnu.App;
-import no.ntnu.entity.User;
 import no.ntnu.entity.Course;
 import no.ntnu.entity.CourseParticipant;
-import no.ntnu.util.CommandUtil;
+import no.ntnu.entity.User;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -12,20 +11,36 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Object manager for the {@link Course} and {@link CourseParticipant} entity classes.
+ * Maintains a state for the currently selected course.
+ * <p>
+ * {@inheritDoc}
+ *
+ * @see Course
+ * @see CourseParticipant
+ */
 public class CourseObjectManager extends ActiveDomainObjectManager {
 
     private static final String INSERT_COURSE_STATEMENT = "INSERT INTO course(Name, Term, AllowAnonymous)" +
             " VALUES (?, ?, ?);";
+
     private static final String SELECT_COURSES_BY_NAME_STATEMENT = "SELECT * FROM course WHERE course.Name = ?;";
+
     private static final String SELECT_INSTRUCTOR_COURSES_BY_NAME_STATEMENT = "SELECT * FROM course C NATURAL" +
-            "  JOIN participant P WHERE C.Name = ? AND P.User = ? AND P.IsInstructor = TRUE;";
+            " JOIN participant P WHERE C.Name = ? AND P.User = ? AND P.IsInstructor = TRUE;";
+
     private static final String INSERT_PARTICIPANT_STATEMENT = "INSERT INTO participant(User, CourseId, IsInstructor)" +
             " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE IsInstructor=VALUES(IsInstructor);";
+
     private static final String SELECT_USER_COURSES_STATEMENT = "SELECT p.IsInstructor, c.* FROM " +
             "participant p NATURAL JOIN course c WHERE p.User = ?;";
 
     private Course selectedCourse;
 
+    /**
+     * {@inheritDoc}
+     */
     public CourseObjectManager(App app) {
         super(app);
     }
@@ -33,13 +48,13 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
     /**
      * Creates a course with the given parameters
      *
-     * @param name the name of the course
-     * @param term the term the course is taking place
+     * @param name           the name of the course
+     * @param term           the term the course is taking place
      * @param allowAnonymous whether or not this course allows anonymous posts
      * @return the newly created course
      */
     public Course createCourse(String name, String term, boolean allowAnonymous) {
-        if (!this.getApp().getAuthController().isAuthenticated()) {
+        if (!this.getApp().getUserManager().isAuthenticated()) {
             throw new IllegalStateException("You have to be authenticated to do this!");
         }
 
@@ -66,7 +81,7 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
             int courseId = generated.getInt(1);
 
             // Add the current user as an instructor in the created course
-            User currentUser = this.getApp().getAuthController().getCurrentUser();
+            User currentUser = this.getApp().getUserManager().getCurrentUser();
             this.addParticipant(currentUser.getEmail(), courseId, true);
 
             return new Course(courseId, name, term, allowAnonymous);
@@ -76,18 +91,20 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * @return The currently selected course
+     */
     public Course getSelectedCourse() {
         return selectedCourse;
     }
 
     /**
-     * Select a course to use for further queries
+     * Set the currently selected course
      *
-     * @param name the name of the course to select. If multiple exist, the user is given the explicit choice.
+     * @param course The updated selected {@link Course course}.
      */
-    public void selectCourse(String name){
-        List<Course> potentialCourses = getCoursesByName(name);
-        this.selectedCourse = CommandUtil.selectOptions(potentialCourses);
+    public void selectCourse(Course course) {
+        this.selectedCourse = course;
     }
 
     /**
@@ -120,6 +137,7 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
 
     /**
      * Select all courses with a specific name where a given user is an instructor
+     *
      * @param user the instructor
      * @param name the name of of the course
      * @return list of courses with the name where the user is an instructor
@@ -152,10 +170,11 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
     }
 
     /**
-     * Adds a participant to a course
+     * Adds a participant to a course. If the user is already a participant,
+     * their isInstructor status will be updated to what is provided.
      *
-     * @param user the user to add as a participant
-     * @param courseId the id of the course the user participates in
+     * @param user         the user to add as a participant
+     * @param courseId     the id of the course the user participates in
      * @param isInstructor whether or not the user if an instructor in the course
      * @return CourseParticipation object signifying the participation
      */

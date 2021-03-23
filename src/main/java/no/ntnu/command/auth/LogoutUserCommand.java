@@ -26,7 +26,7 @@ public class LogoutUserCommand implements Command {
 
     @Override
     public void execute(String label, String[] args) {
-        UserObjectManager userObjectManager = this.app.getAuthController();
+        UserObjectManager userObjectManager = this.app.getUserManager();
         userObjectManager.logoutUser();
     }
 }

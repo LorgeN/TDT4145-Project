@@ -11,9 +11,6 @@ import java.sql.Statement;
 
 /**
  * Connection manager class. Creates connections on demand.
- * <p>
- * If you intend to actually use this for something, use a connection
- * pool like HikariCP.
  */
 public class ConnectionManager {
 
@@ -41,6 +38,9 @@ public class ConnectionManager {
      * @throws SQLException If an error occurs
      */
     public Connection getConnection() throws SQLException {
+        // Ideally this should be replaced by a connection pool like HikariCP
+        // (See https://github.com/brettwooldridge/HikariCP), but for the scope
+        // of this assignment we did not feel that it was necessary
         return DriverManager.getConnection(this.url, this.username, this.password);
     }
 
@@ -54,7 +54,8 @@ public class ConnectionManager {
         try (Connection connection = this.getConnection()) {
             Statement statement = connection.createStatement();
 
-            statement.execute("SELECT 1");
+            // This statement just tests that we are able to run a query on the database
+            statement.execute("SELECT 1;");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -62,6 +63,13 @@ public class ConnectionManager {
         }
     }
 
+    /**
+     * Runs a script to create the tables if they do not exist. No error will be
+     * thrown if the tables already exist. Please note that there is no verification
+     * that the table structure is correct if they already exist. It is assumed that
+     * if the tables exist, they were created according to the definitions of this
+     * application.
+     */
     public void makeTables() {
         try (Connection connection = this.getConnection()) {
             InputStream stream = this.getClass().getResourceAsStream("/init.sql");

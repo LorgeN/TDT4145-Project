@@ -10,7 +10,7 @@ public class CurrentUserCommand extends ProtectedCommand {
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        System.out.println(this.getApp().getAuthController().getCurrentUser());
+        System.out.println(this.getApp().getUserManager().getCurrentUser());
 
     }
 

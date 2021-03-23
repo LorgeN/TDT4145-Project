@@ -34,7 +34,7 @@ public class LoginCommand implements Command {
             return;
         }
 
-        UserObjectManager userObjectManager = this.app.getAuthController();
+        UserObjectManager userObjectManager = this.app.getUserManager();
         userObjectManager.loginUser(args[0], args[1]);
 
         if (userObjectManager.loginUser(args[0], args[1])) {

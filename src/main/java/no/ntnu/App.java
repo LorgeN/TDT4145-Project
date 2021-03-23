@@ -6,6 +6,7 @@ import no.ntnu.command.course.CreateCourseCommand;
 import no.ntnu.command.course.InviteUserCommand;
 import no.ntnu.command.course.SelectCourseCommand;
 import no.ntnu.command.course.ViewCoursesCommand;
+import no.ntnu.command.database.DatabaseConnectCommand;
 import no.ntnu.command.folder.CreateFolderCommand;
 import no.ntnu.command.posts.*;
 import no.ntnu.command.statistics.StatisticCommand;
@@ -13,23 +14,29 @@ import no.ntnu.command.tag.CreateTagCommand;
 import no.ntnu.command.tag.ViewTagsCommand;
 import no.ntnu.manager.*;
 import no.ntnu.mysql.ConnectionManager;
-import no.ntnu.command.database.DatabaseConnectCommand;
 
 /**
- * Main class for the application
+ * Main class for the application, containing instances of the various
+ * {@link ActiveDomainObjectManager managers}.
  */
 public class App {
 
     private final CommandLineRunner runner;
+
+    // Manager instances
     private final CourseObjectManager courseObjectManager;
     private final TagObjectManager tagObjectManager;
     private final PostObjectManager postObjectManager;
     private final FolderObjectManager folderObjectManager;
     private final StatisticsObjectManager statisticsObjectManager;
+    private final UserObjectManager userObjectManager;
 
     private ConnectionManager connectionManager;
-    private UserObjectManager userObjectManager;
 
+    /**
+     * Creates a new instance of the application, and initializes all the managers
+     * etc. Before the application can be used, a connection manager must be configured.
+     */
     public App() {
         this.runner = new CommandLineRunner();
         this.courseObjectManager = new CourseObjectManager(this);
@@ -39,7 +46,6 @@ public class App {
         this.tagObjectManager = new TagObjectManager(this);
         this.postObjectManager = new PostObjectManager(this);
         this.folderObjectManager = new FolderObjectManager(this);
-
 
         this.runner.registerCommand("createcourse", new CreateCourseCommand(this));
         this.runner.registerCommand("viewcourses", new ViewCoursesCommand(this));
@@ -62,38 +68,38 @@ public class App {
         this.runner.registerCommand("createtag", new CreateTagCommand(this));
     }
 
+    /**
+     * @return The {@link CommandLineRunner command runner} instance
+     */
     public CommandLineRunner getRunner() {
         return runner;
     }
 
-    public TagObjectManager getTagObjectManager() {
-        return tagObjectManager;
-    }
-
+    /**
+     * Starts the infinite command loop. This is a blocking operation,
+     * and the thread this is called on will not be released until the
+     * system is exited.
+     */
     public void startRunner() {
         this.runner.startCommandLoop();
     }
 
+    /**
+     * @return The {@link ConnectionManager SQL connection manager} instance
+     */
     public ConnectionManager getConnectionManager() {
         return connectionManager;
     }
 
-    public CourseObjectManager getCourseObjectManager() {
-        return courseObjectManager;
-    }
-
-    public StatisticsObjectManager getStatisticsManager() {
-        return statisticsObjectManager;
-    }
-
-    public FolderObjectManager getFolderManager() {
-        return folderObjectManager;
-    }
-
-    public PostObjectManager getPostObjectManager() {
-        return postObjectManager;
-    }
-
+    /**
+     * Updates the connection manager to be used in this application instance.
+     * Will test the connection using a simple test statement, and if the test
+     * is successful a script to create the required tables will be executed.
+     *
+     * @param connectionManager The new {@link ConnectionManager connection manager}
+     * @see ConnectionManager#testConnection()
+     * @see ConnectionManager#makeTables()
+     */
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
 
@@ -111,12 +117,45 @@ public class App {
         System.out.println("Finished checking tables!");
     }
 
-    public void setAuthController(UserObjectManager userObjectManager) {
-        this.userObjectManager = userObjectManager;
+    /**
+     * @return The {@link TagObjectManager} instance
+     */
+    public TagObjectManager getTagObjectManager() {
+        return tagObjectManager;
     }
 
-    public UserObjectManager getAuthController() {
+    /**
+     * @return The {@link CourseObjectManager} instance
+     */
+    public CourseObjectManager getCourseObjectManager() {
+        return courseObjectManager;
+    }
+
+    /**
+     * @return The {@link StatisticsObjectManager} instance
+     */
+    public StatisticsObjectManager getStatisticsManager() {
+        return statisticsObjectManager;
+    }
+
+    /**
+     * @return The {@link FolderObjectManager} instance
+     */
+    public FolderObjectManager getFolderManager() {
+        return folderObjectManager;
+    }
+
+    /**
+     * @return The {@link PostObjectManager} instance
+     */
+    public PostObjectManager getPostObjectManager() {
+        return postObjectManager;
+    }
+
+    /**
+     * @return The {@link UserObjectManager} instance
+     */
+    public UserObjectManager getUserManager() {
         return userObjectManager;
     }
-
 }

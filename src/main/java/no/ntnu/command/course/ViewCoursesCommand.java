@@ -16,7 +16,7 @@ public class ViewCoursesCommand extends ProtectedCommand {
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        User user = this.getApp().getAuthController().getCurrentUser();
+        User user = this.getApp().getUserManager().getCurrentUser();
         CourseObjectManager manager = this.getApp().getCourseObjectManager();
         Map<Course, Boolean> courses = manager.getCourses(user.getEmail());
 

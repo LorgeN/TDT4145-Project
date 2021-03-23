@@ -38,7 +38,7 @@ public class CreateUserCommand implements Command {
         String password = args[2];
 
         try {
-            this.app.getAuthController().createUser(email, name, password);
+            this.app.getUserManager().createUser(email, name, password);
             System.out.println("User created!");
         } catch (SQLException e) {
             System.out.println("Could not create the user!");

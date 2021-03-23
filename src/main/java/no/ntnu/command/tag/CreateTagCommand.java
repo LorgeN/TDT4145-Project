@@ -34,7 +34,7 @@ public class CreateTagCommand extends ProtectedCommand {
             return;
         }
 
-        User selfUser = this.getApp().getAuthController().getCurrentUser();
+        User selfUser = this.getApp().getUserManager().getCurrentUser();
         CourseObjectManager courseManager = this.getApp().getCourseObjectManager();
 
         String courseName = args[0];

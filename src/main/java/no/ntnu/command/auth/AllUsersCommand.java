@@ -23,6 +23,6 @@ public class AllUsersCommand implements Command {
 
     @Override
     public void execute(String label, String[] args) {
-        this.app.getAuthController().getAllUsers().forEach(System.out::println);
+        this.app.getUserManager().getAllUsers().forEach(System.out::println);
     }
 }

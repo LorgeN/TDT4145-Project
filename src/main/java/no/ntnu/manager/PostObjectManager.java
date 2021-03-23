@@ -10,6 +10,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Object manager for the {@link Thread} and {@link Post} entity classes.
+ * <p>
+ * {@inheritDoc}
+ *
+ * @see Thread
+ * @see Post
+ */
 public class PostObjectManager extends ActiveDomainObjectManager {
 
     private static final String INSERT_THREAD_STATEMENT = "INSERT INTO thread(Title, CourseId, FolderId, Tag) " +
@@ -36,7 +44,9 @@ public class PostObjectManager extends ActiveDomainObjectManager {
 
     private static final String SELECT_THREAD_REPLY_STATUS_STATEMENT = "SELECT *, " +
             "CASE " +
-            "WHEN EXISTS(SELECT * FROM (Post P JOIN User U ON P.CreatedByUser = U.Email) JOIN Participant PP ON U.Email = PP.User WHERE PP.IsInstructor = TRUE AND P.ThreadId = P.ThreadId AND PP.CourseId = ?) THEN " + Thread.INSTRUCTOR_ANSWERED + " " +
+            "WHEN EXISTS(SELECT * FROM (Post P JOIN User U ON P.CreatedByUser = U.Email) JOIN Participant PP " +
+            "ON U.Email = PP.User WHERE PP.IsInstructor = TRUE AND P.ThreadId = P.ThreadId AND PP.CourseId = ?) " +
+            "THEN " + Thread.INSTRUCTOR_ANSWERED + " " +
             "WHEN (SELECT COUNT(*) FROM Post P3 WHERE P3.ThreadId = T.ThreadId) > 1 THEN " + Thread.ANSWERED + " " +
             "ELSE " + Thread.NOT_ANSWERED + " " +
             "END AS Answered " +
@@ -48,8 +58,12 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             "WHERE User = ? " +
             "AND PostId = ?";
 
-    private static final String SEARCH_STRING = "SELECT * FROM Post P JOIN Thread T ON P.ThreadId = T.ThreadId WHERE P.Text LIKE ? AND T.CourseId = ?";
+    private static final String SEARCH_STRING = "SELECT * FROM Post P JOIN Thread T ON P.ThreadId = T.ThreadId " +
+            "WHERE P.Text LIKE ? AND T.CourseId = ?";
 
+    /**
+     * {@inheritDoc}
+     */
     public PostObjectManager(App app) {
         super(app);
     }
@@ -79,6 +93,14 @@ public class PostObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Gets information about the {@link Thread thread} with the given thread ID.
+     *
+     * @param threadId The thread's ID
+     * @param courseId The ID of the course the thread is in. Optional. If not provided,
+     *                 no answer status will be computed.
+     * @return The thread
+     */
     public Thread getThread(int threadId, Integer courseId) {
         String query = courseId == null ? SELECT_THREAD_STATEMENT : SELECT_THREAD_REPLY_STATUS_STATEMENT;
         try (Connection connection = this.getConnection()) {
@@ -102,6 +124,12 @@ public class PostObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Gets all {@link Post posts} in the {@link Thread thread} with the given ID.
+     *
+     * @param threadId The thread ID
+     * @return The posts in the given thread
+     */
     public List<Post> getPosts(int threadId) {
         try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_POSTS_STATEMENT);
@@ -121,6 +149,12 @@ public class PostObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Gets the {@link Post post} with the given ID
+     *
+     * @param postId The ID of the post
+     * @return The post
+     */
     public Post getPostById(int postId) {
         try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SELECT_SINGLE_POST_STATEMENT);
@@ -173,7 +207,7 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             throw new IllegalArgumentException("Text can not be null!");
         }
 
-        User user = this.getApp().getAuthController().getCurrentUser();
+        User user = this.getApp().getUserManager().getCurrentUser();
         if (user == null) {
             throw new IllegalStateException("You have to be logged in to do this!");
         }

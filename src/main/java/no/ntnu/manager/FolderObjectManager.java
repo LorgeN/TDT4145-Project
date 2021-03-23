@@ -8,11 +8,21 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Object manager for the {@link Folder} entity class.
+ * <p>
+ * {@inheritDoc}
+ *
+ * @see Folder
+ */
 public class FolderObjectManager extends ActiveDomainObjectManager {
+
     private static final String INSERT_FOLDER = "INSERT INTO Folder(Name, CourseId, ParentFolderId) VALUES(?, ?, ?);";
     private static final String SELECT_FOLDER = "SELECT * FROM Folder WHERE Name = ? AND CourseId = ?;";
 
-
+    /**
+     * {@inheritDoc}
+     */
     public FolderObjectManager(App app) {
         super(app);
     }
@@ -30,7 +40,7 @@ public class FolderObjectManager extends ActiveDomainObjectManager {
         }
 
         try (Connection connection = this.getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_FOLDER, Statement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statement = connection.prepareStatement(INSERT_FOLDER)) {
             statement.setString(1, name);
             statement.setInt(2, courseId);
 
