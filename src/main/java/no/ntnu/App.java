@@ -1,21 +1,19 @@
 package no.ntnu;
 
-import no.ntnu.auth.UserObjectManager;
-import no.ntnu.auth.command.*;
 import no.ntnu.command.CommandLineRunner;
-import no.ntnu.course.CourseObjectManager;
-import no.ntnu.course.command.SelectCourseCommand;
-import no.ntnu.folder.FolderObjectManager;
-import no.ntnu.folder.command.CreateFolderCommand;
+import no.ntnu.command.auth.*;
+import no.ntnu.command.course.CreateCourseCommand;
+import no.ntnu.command.course.InviteUserCommand;
+import no.ntnu.command.course.SelectCourseCommand;
+import no.ntnu.command.course.ViewCoursesCommand;
+import no.ntnu.command.folder.CreateFolderCommand;
+import no.ntnu.command.posts.*;
+import no.ntnu.command.statistics.StatisticCommand;
+import no.ntnu.command.tag.CreateTagCommand;
+import no.ntnu.command.tag.ViewTagsCommand;
+import no.ntnu.manager.*;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
-import no.ntnu.posts.PostObjectManager;
-import no.ntnu.posts.command.GoodCommentCommand;
-import no.ntnu.search.SearchObjectManager;
-import no.ntnu.search.command.SearchCommand;
-import no.ntnu.statistics.StatisticsObjectManager;
-import no.ntnu.statistics.command.StatisticCommand;
-import no.ntnu.tags.TagObjectManager;
 
 /**
  * Main class for the application
@@ -26,12 +24,12 @@ public class App {
     private final CourseObjectManager courseObjectManager;
     private final TagObjectManager tagObjectManager;
     private final PostObjectManager postObjectManager;
+    private final FolderObjectManager folderObjectManager;
+    private final StatisticsObjectManager statisticsObjectManager;
+    private final SearchObjectManager searchObjectManager;
 
     private ConnectionManager connectionManager;
     private UserObjectManager userObjectManager;
-    private FolderObjectManager folderObjectManager;
-    private StatisticsObjectManager statisticsObjectManager;
-    private SearchObjectManager searchObjectManager;
 
     public App() {
         this.runner = new CommandLineRunner();
@@ -44,8 +42,11 @@ public class App {
         this.postObjectManager = new PostObjectManager(this);
         this.folderObjectManager = new FolderObjectManager(this);
 
+
+        this.runner.registerCommand("createcourse", new CreateCourseCommand(this));
+        this.runner.registerCommand("viewcourses", new ViewCoursesCommand(this));
+        this.runner.registerCommand("inviteuser", new InviteUserCommand(this));
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
-        this.runner.registerCommand("login", new LoginCommand(this));
         this.runner.registerCommand("createfolder", new CreateFolderCommand(this));
         this.runner.registerCommand("currentuser", new CurrentUserCommand(this));
         this.runner.registerCommand("login", new LoginCommand(this));
@@ -56,6 +57,11 @@ public class App {
         this.runner.registerCommand("selectcourse", new SelectCourseCommand(this));
         this.runner.registerCommand("search", new SearchCommand(this));
         this.runner.registerCommand("goodcomment", new GoodCommentCommand(this));
+        this.runner.registerCommand("createthread", new CreateThreadCommand(this));
+        this.runner.registerCommand("viewthread", new ViewThreadCommand(this));
+        this.runner.registerCommand("createcomment", new CreateCommentCommand(this));
+        this.runner.registerCommand("viewtags", new ViewTagsCommand(this));
+        this.runner.registerCommand("createtag", new CreateTagCommand(this));
     }
 
     public CommandLineRunner getRunner() {
