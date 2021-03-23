@@ -42,7 +42,7 @@ public class LoginCommand implements Command {
             System.out.println("Succesfully logged in user: " + userObjectManager.getCurrentUser());
 
             System.out.println("Registering active today...");
-            this.app.getStatisticsController().registerLogin(user.getEmail());
+            this.app.getStatisticsManager().registerLogin(user.getEmail());
         }
     }
 }

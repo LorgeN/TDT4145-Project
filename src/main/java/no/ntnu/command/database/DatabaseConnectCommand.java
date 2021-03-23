@@ -1,4 +1,4 @@
-package no.ntnu.mysql.command;
+package no.ntnu.command.database;
 
 import no.ntnu.App;
 import no.ntnu.command.Command;

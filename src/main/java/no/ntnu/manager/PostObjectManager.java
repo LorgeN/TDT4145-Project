@@ -61,7 +61,7 @@ public class PostObjectManager extends ActiveDomainObjectManager {
      * @param keyword include only posts with text containing this keyword
      */
     public List<Post> search(String keyword, int courseId) {
-        try (Connection connection = this.connectionManager.getConnection()) {
+        try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(SEARCH_STRING);
             statement.setString(1, "%" + keyword + "%");
             statement.setInt(2, courseId);

@@ -14,7 +14,7 @@ public class CreateFolderCommand extends ProtectedCommand {
 
     public CreateFolderCommand(App app) {
         super(app);
-        this.folderObjectManager = app.getFolderController();
+        this.folderObjectManager = app.getFolderManager();
     }
 
     @Override

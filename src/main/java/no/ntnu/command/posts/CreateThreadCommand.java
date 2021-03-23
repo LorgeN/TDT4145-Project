@@ -47,7 +47,7 @@ public class CreateThreadCommand extends ProtectedCommand {
             anonymous = Boolean.parseBoolean(args[2]);
         }
 
-        FolderObjectManager folderObjectManager = this.getApp().getFolderController();
+        FolderObjectManager folderObjectManager = this.getApp().getFolderManager();
         List<Folder> folders = folderObjectManager.getFoldersByName(course.getCourseId(), args[0]);
         Folder folder = CommandUtil.selectOptions(folders);
         if (folder == null) {

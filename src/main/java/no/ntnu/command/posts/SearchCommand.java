@@ -5,7 +5,6 @@ import no.ntnu.command.auth.ProtectedCommand;
 import no.ntnu.entity.Course;
 import no.ntnu.entity.Post;
 import no.ntnu.manager.PostObjectManager;
-import no.ntnu.manager.SearchObjectManager;
 
 import java.util.List;
 

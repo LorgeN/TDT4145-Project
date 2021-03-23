@@ -67,7 +67,7 @@ public class ViewThreadCommand extends ProtectedCommand {
 
         User user = this.getApp().getAuthController().getCurrentUser();
 
-        this.getApp().getStatisticsController().readPost(user.getEmail(), posts.stream()
+        this.getApp().getStatisticsManager().readPost(user.getEmail(), posts.stream()
                 .map(Post::getPostId).collect(Collectors.toList()));
 
         String ansiColor = ANSI_WHITE;

@@ -11,7 +11,7 @@ public class StatisticCommand extends ProtectedCommand {
 
     public StatisticCommand(App app) {
         super(app);
-        this.statisticsObjectManager = app.getStatisticsController();
+        this.statisticsObjectManager = app.getStatisticsManager();
     }
 
     @Override

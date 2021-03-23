@@ -2,7 +2,6 @@ package no.ntnu.manager;
 
 import no.ntnu.App;
 import no.ntnu.mysql.ActiveDomainObjectManager;
-import no.ntnu.mysql.ConnectionManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +25,7 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
     }
 
     public void registerLogin(String user) {
-        try (Connection connection = this.connectionManager.getConnection()) {
+        try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(INSERT_LOGIN_STATEMENT);
             statement.setString(1, user);
 
@@ -37,7 +36,7 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
     }
 
     public void readPost(String user, List<Integer> posts) {
-        try (Connection connection = this.connectionManager.getConnection()) {
+        try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(INSERT_READ_STATEMENT);
             statement.setString(1, user);
 
@@ -65,7 +64,7 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
             return;
         }
 
-        try (Connection connection = this.connectionManager.getConnection();
+        try (Connection connection = this.getConnection();
              PreparedStatement statement = connection.prepareStatement(queryString)) {
             statement.setInt(1, courseId);
 

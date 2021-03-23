@@ -13,7 +13,7 @@ import no.ntnu.command.tag.CreateTagCommand;
 import no.ntnu.command.tag.ViewTagsCommand;
 import no.ntnu.manager.*;
 import no.ntnu.mysql.ConnectionManager;
-import no.ntnu.mysql.command.DatabaseConnectCommand;
+import no.ntnu.command.database.DatabaseConnectCommand;
 
 /**
  * Main class for the application
@@ -26,7 +26,6 @@ public class App {
     private final PostObjectManager postObjectManager;
     private final FolderObjectManager folderObjectManager;
     private final StatisticsObjectManager statisticsObjectManager;
-    private final SearchObjectManager searchObjectManager;
 
     private ConnectionManager connectionManager;
     private UserObjectManager userObjectManager;
@@ -36,7 +35,6 @@ public class App {
         this.courseObjectManager = new CourseObjectManager(this);
         this.userObjectManager = new UserObjectManager(this);
         this.statisticsObjectManager = new StatisticsObjectManager(this);
-        this.searchObjectManager = new SearchObjectManager(this);
 
         this.tagObjectManager = new TagObjectManager(this);
         this.postObjectManager = new PostObjectManager(this);
@@ -84,15 +82,11 @@ public class App {
         return courseObjectManager;
     }
 
-    public StatisticsObjectManager getStatisticsController() {
+    public StatisticsObjectManager getStatisticsManager() {
         return statisticsObjectManager;
     }
 
-    public SearchObjectManager getSearchController() {
-        return searchObjectManager;
-    }
-
-    public FolderObjectManager getFolderController() {
+    public FolderObjectManager getFolderManager() {
         return folderObjectManager;
     }
 
@@ -102,10 +96,6 @@ public class App {
 
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
-        this.userObjectManager.setConnectionManager(connectionManager);
-        this.statisticsObjectManager.setConnectionManager(connectionManager);
-        this.searchObjectManager.setConnectionManager(connectionManager);
-        this.folderObjectManager.setConnectionManager(connectionManager);
 
         if (this.connectionManager == null) {
             return;
