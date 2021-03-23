@@ -46,7 +46,7 @@ public class CreateFolderCommand extends ProtectedCommand {
         Integer parentFolderId = null;
         if (args.length == 3) {
             String parentFolderName = args[2];
-            List<Folder> folders = folderObjectManager.getFoldersByName(parentFolderName);
+            List<Folder> folders = folderObjectManager.getFoldersByName(course.getCourseId(), parentFolderName);
             parentFolderId = CommandUtil.selectOptions(folders).getFolderId();
 
             if (folders == null) {
