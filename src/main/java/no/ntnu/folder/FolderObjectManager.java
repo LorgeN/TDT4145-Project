@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FolderObjectManager extends ActiveDomainObjectManager {
-    private ConnectionManager connectionManager;
     private static final String INSERT_FOLDER = "INSERT INTO Folder(Name, CourseId, ParentFolderId) VALUES(?, ?, ?);";
     private static final String SELECT_FOLDER = "SELECT * FROM Folder WHERE Name = ? AND CourseId = ?;";
 
@@ -89,9 +88,5 @@ public class FolderObjectManager extends ActiveDomainObjectManager {
         Folder folder = new Folder(name, courseId, parentFolderId);
         folder.setFolderId(folderId);
         return folder;
-    }
-
-    public void setConnectionManager(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
     }
 }

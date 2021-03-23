@@ -2,7 +2,6 @@ package no.ntnu.auth;
 
 import no.ntnu.App;
 import no.ntnu.mysql.ActiveDomainObjectManager;
-import no.ntnu.mysql.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +17,6 @@ public class UserObjectManager extends ActiveDomainObjectManager {
     private static final String INSERT_USER = "INSERT INTO User (Email, Name, Password) VALUES (?, ?, ?)";
 
     private User currentUser = null;
-    private ConnectionManager connectionManager;
 
     public UserObjectManager(App app) {
         super(app);
@@ -100,7 +98,7 @@ public class UserObjectManager extends ActiveDomainObjectManager {
     }
 
     /**
-     * Returns the user with the given email adress
+     * Returns the user with the given email address
      *
      * @param email email address
      * @return the user matching the email
@@ -126,10 +124,6 @@ public class UserObjectManager extends ActiveDomainObjectManager {
 
     public User getCurrentUser() {
         return currentUser;
-    }
-
-    public void setConnectionManager(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
     }
 
     public boolean isAuthenticated() {

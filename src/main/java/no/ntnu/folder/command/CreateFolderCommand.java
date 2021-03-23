@@ -7,7 +7,6 @@ import no.ntnu.folder.Folder;
 import no.ntnu.folder.FolderObjectManager;
 import no.ntnu.util.CommandUtil;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public class CreateFolderCommand extends ProtectedCommand {

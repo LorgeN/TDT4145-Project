@@ -21,8 +21,6 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
     private static final String INSERT_READ_STATEMENT = "INSERT IGNORE INTO postread(User, PostId) VALUES (?, ?);";
     private static final String INSERT_LOGIN_STATEMENT = "INSERT IGNORE INTO activedays(User, Date) VALUES (?, NOW());";
 
-    private ConnectionManager connectionManager;
-
     public StatisticsObjectManager(App app) {
         super(app);
     }
@@ -134,9 +132,5 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
             throw new IOException("Could not find the file");
         }
 
-    }
-
-    public void setConnectionManager(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
     }
 }

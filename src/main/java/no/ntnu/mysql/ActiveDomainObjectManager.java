@@ -8,6 +8,7 @@ import java.sql.SQLException;
 public abstract class ActiveDomainObjectManager {
 
     private final App app;
+    protected ConnectionManager connectionManager;
 
     public ActiveDomainObjectManager(App app) {
         this.app = app;
@@ -19,5 +20,9 @@ public abstract class ActiveDomainObjectManager {
 
     public Connection getConnection() throws SQLException {
         return this.app.getConnectionManager().getConnection();
+    }
+
+    public void setConnectionManager(ConnectionManager connectionManager) {
+        this.connectionManager = connectionManager;
     }
 }

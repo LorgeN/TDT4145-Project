@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SearchObjectManager extends ActiveDomainObjectManager {
-    private ConnectionManager connectionManager;
     private static final String SEARCH_STRING = "SELECT * FROM Post P JOIN Thread T ON P.ThreadId = T.ThreadId WHERE P.Text LIKE ? AND T.CourseId = ?";
 
     public SearchObjectManager(App app) {
@@ -41,9 +40,5 @@ public class SearchObjectManager extends ActiveDomainObjectManager {
             e.printStackTrace();
             return null;
         }
-    }
-
-    public void setConnectionManager(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
     }
 }
