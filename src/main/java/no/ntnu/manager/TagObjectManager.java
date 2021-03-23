@@ -2,10 +2,7 @@ package no.ntnu.manager;
 
 import no.ntnu.App;
 import no.ntnu.entity.Course;
-import no.ntnu.mysql.ActiveDomainObjectManager;
 import no.ntnu.entity.Tag;
-import no.ntnu.command.tag.CreateTagCommand;
-import no.ntnu.command.tag.ViewTagsCommand;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

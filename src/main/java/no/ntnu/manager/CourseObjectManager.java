@@ -4,10 +4,6 @@ import no.ntnu.App;
 import no.ntnu.entity.User;
 import no.ntnu.entity.Course;
 import no.ntnu.entity.CourseParticipant;
-import no.ntnu.command.course.CreateCourseCommand;
-import no.ntnu.command.course.InviteUserCommand;
-import no.ntnu.command.course.ViewCoursesCommand;
-import no.ntnu.mysql.ActiveDomainObjectManager;
 import no.ntnu.util.CommandUtil;
 
 import java.sql.*;

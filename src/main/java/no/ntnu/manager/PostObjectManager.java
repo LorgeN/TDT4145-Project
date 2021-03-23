@@ -4,7 +4,6 @@ import no.ntnu.App;
 import no.ntnu.entity.Post;
 import no.ntnu.entity.Thread;
 import no.ntnu.entity.User;
-import no.ntnu.mysql.ActiveDomainObjectManager;
 
 import java.sql.*;
 import java.time.LocalDateTime;

@@ -2,7 +2,6 @@ package no.ntnu.manager;
 
 import no.ntnu.App;
 import no.ntnu.entity.User;
-import no.ntnu.mysql.ActiveDomainObjectManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

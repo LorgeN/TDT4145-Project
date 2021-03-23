@@ -3,7 +3,6 @@ package no.ntnu.manager;
 
 import no.ntnu.App;
 import no.ntnu.entity.Folder;
-import no.ntnu.mysql.ActiveDomainObjectManager;
 
 import java.sql.*;
 import java.util.ArrayList;

@@ -1,7 +1,6 @@
 package no.ntnu.manager;
 
 import no.ntnu.App;
-import no.ntnu.mysql.ActiveDomainObjectManager;
 
 import java.io.BufferedReader;
 import java.io.IOException;
