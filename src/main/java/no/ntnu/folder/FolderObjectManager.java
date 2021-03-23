@@ -16,15 +16,23 @@ import java.util.List;
 
 public class FolderObjectManager extends ActiveDomainObjectManager {
     private ConnectionManager connectionManager;
-    private final String INSERT_FOLDER = "INSERT INTO Folder(Name, CourseId, ParentFolderId) VALUES(?, ?, ?);";
+    private static final String INSERT_FOLDER = "INSERT INTO Folder(Name, CourseId, ParentFolderId) VALUES(?, ?, ?);";
+    private static final String SELECT_FOLDER = "SELECT * FROM Folder WHERE Name = ? AND CourseId = ?;";
+
 
     public FolderObjectManager(App app) {
         super(app);
     }
 
-    public void createFolder(String name, int courseId, Integer parentFolderId) throws SQLException, NullPointerException {
+    /**
+     * Creates a folder with the given values
+     * @param name the name of the folder
+     * @param courseId the id of the course the folder belongs to
+     * @param parentFolderId the id of the parent folder, can be null.
+     */
+    public void createFolder(String name, int courseId, Integer parentFolderId) {
         if (name == null) {
-            throw new NullPointerException("Please provide a name!");
+            throw new IllegalArgumentException("Please provide a name!");
         }
 
         try (Connection connection = connectionManager.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_FOLDER, Statement.RETURN_GENERATED_KEYS)) {
@@ -40,13 +48,17 @@ public class FolderObjectManager extends ActiveDomainObjectManager {
             statement.execute();
         } catch (SQLException e){
             e.printStackTrace();
-            throw e;
         }
     }
 
+    /**
+     * Get all folders with a given name
+     * @param courseId id of the course to look within for folders
+     * @param name name to search for
+     * @return a list of folders with the given name
+     */
     public List<Folder> getFoldersByName(int courseId, String name) {
-        String queryString = "SELECT * FROM Folder WHERE Name = ? AND CourseId = ?;";
-        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(queryString)) {
+        try (PreparedStatement statement = connectionManager.getConnection().prepareStatement(SELECT_FOLDER)) {
             statement.setString(1, name);
             statement.setInt(2, courseId);
 
@@ -63,6 +75,12 @@ public class FolderObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Create a folder from the given ResultSet
+     * @param result the set to make the folder from
+     * @return newly created folder
+     * @throws SQLException if the ResultSet does not contain the needed columns
+     */
     private Folder fromResultSet(ResultSet result) throws SQLException {
         String name = result.getString("Name");
         int courseId = result.getInt("CourseId");

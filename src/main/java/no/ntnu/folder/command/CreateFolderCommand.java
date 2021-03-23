@@ -57,9 +57,7 @@ public class CreateFolderCommand extends ProtectedCommand {
 
         try {
             this.folderObjectManager.createFolder(name, courseId, parentFolderId);
-        } catch (SQLException e){
-            System.out.println("Could not create the folder!");
-        } catch (NullPointerException e) {
+        }  catch (NullPointerException e) {
             e.printStackTrace();
             System.out.println("Please provide all values!");
         }
