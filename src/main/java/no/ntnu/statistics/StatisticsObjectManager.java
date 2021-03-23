@@ -70,7 +70,6 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
         try (Connection connection = this.connectionManager.getConnection();
              PreparedStatement statement = connection.prepareStatement(queryString)) {
             statement.setInt(1, courseId);
-            statement.setInt(2, courseId);
 
             ResultSet result = statement.executeQuery();
 
