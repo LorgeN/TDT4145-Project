@@ -3,7 +3,10 @@ package no.ntnu.search.command;
 import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.course.Course;
+import no.ntnu.posts.Post;
 import no.ntnu.search.SearchObjectManager;
+
+import java.util.List;
 
 public class SearchCommand extends ProtectedCommand {
     public SearchCommand(App app) {
@@ -23,7 +26,13 @@ public class SearchCommand extends ProtectedCommand {
            System.out.println("You have to select a course to search for posts!");
            return;
        }
-       controller.search(keyword, course.getCourseId());
+       List<Post> posts = controller.search(keyword, course.getCourseId(), this.getApp().getPostObjectManager());
+       StringBuilder result = new StringBuilder("Posts containing '" + keyword + "':\n");
+       for (int i = 0; i < posts.size(); i++){
+           Post post = posts.get(i);
+           result.append("\t").append(i + 1).append(". PostId: ").append(post.getPostId()).append(", Text: ").append(post.getText());
+       }
+        System.out.println(result);
     }
 
     @Override
