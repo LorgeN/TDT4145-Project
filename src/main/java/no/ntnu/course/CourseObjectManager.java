@@ -36,6 +36,14 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         app.getRunner().registerCommand("inviteuser", new InviteUserCommand(app));
     }
 
+    /**
+     * Creates a course with the given parameters
+     *
+     * @param name the name of the course
+     * @param term the term the course is taking place
+     * @param allowAnonymous whether or not this course allows anonymous posts
+     * @return the newly created course
+     */
     public Course createCourse(String name, String term, boolean allowAnonymous) {
         if (!this.getApp().getAuthController().isAuthenticated()) {
             throw new IllegalStateException("You have to be authenticated to do this!");
@@ -78,11 +86,22 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         return selectedCourse;
     }
 
+    /**
+     * Select a course to use for further queries
+     *
+     * @param name the name of the course to select. If multiple exist, the user is given the explicit choice.
+     */
     public void selectCourse(String name){
         List<Course> potentialCourses = getCoursesByName(name);
         this.selectedCourse = CommandUtil.selectOptions(potentialCourses);
     }
 
+    /**
+     * Gets all courses with a given name
+     *
+     * @param name the name of the courses to return
+     * @return list of courses with the name
+     */
     public List<Course> getCoursesByName(String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name can not be null!");
@@ -105,6 +124,12 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Select all courses with a specific name where a given user is an instructor
+     * @param user the instructor
+     * @param name the name of of the course
+     * @return list of courses with the name where the user is an instructor
+     */
     public List<Course> getInstructorCourses(String user, String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name can not be null!");
@@ -132,6 +157,14 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Adds a participant to a course
+     *
+     * @param user the user to add as a participant
+     * @param courseId the id of the course the user participates in
+     * @param isInstructor whether or not the user if an instructor in the course
+     * @return CourseParticipation object signifying the participation
+     */
     public CourseParticipant addParticipant(String user, int courseId, boolean isInstructor) {
         if (user == null) {
             throw new IllegalArgumentException("User can not be null!");
@@ -152,6 +185,12 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Get all the courses a given user participates in
+     *
+     * @param user the user that participates
+     * @return Map with course as key and boolean signifying whether or not the user is an instructor as value
+     */
     public Map<Course, Boolean> getCourses(String user) {
         if (user == null) {
             throw new IllegalArgumentException("User can not be null!");
@@ -178,6 +217,13 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
     }
 
+    /**
+     * Creates a course from a ResultSet
+     *
+     * @param result the ResultSet to create the Course from
+     * @return the newly created course
+     * @throws SQLException if one of the columns needed does not exist in the result
+     */
     public Course fromResultSet(ResultSet result) throws SQLException {
         int courseId = result.getInt("CourseId");
         String name = result.getString("Name");
