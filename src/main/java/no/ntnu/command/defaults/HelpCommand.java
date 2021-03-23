@@ -3,6 +3,9 @@ package no.ntnu.command.defaults;
 import no.ntnu.command.Command;
 import no.ntnu.command.CommandLineRunner;
 
+import java.util.Comparator;
+import java.util.Map;
+
 /**
  * Lists all registered commands
  */
@@ -27,6 +30,7 @@ public class HelpCommand implements Command {
         System.out.println("All available commands:");
 
         this.runner.getCommands().entrySet().stream()
+                .sorted(Map.Entry.comparingByKey())
                 .map(entry -> this.makeHelpMessage(entry.getKey(), entry.getValue()))
                 .forEach(System.out::println);
     }
