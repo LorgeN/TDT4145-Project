@@ -1,18 +1,18 @@
 package no.ntnu;
 
-import no.ntnu.auth.AuthController;
+import no.ntnu.auth.UserObjectManager;
 import no.ntnu.auth.command.*;
 import no.ntnu.command.CommandLineRunner;
 import no.ntnu.course.CourseObjectManager;
 import no.ntnu.course.command.SelectCourseCommand;
-import no.ntnu.folder.FolderController;
+import no.ntnu.folder.FolderObjectManager;
 import no.ntnu.folder.command.CreateFolderCommand;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
 import no.ntnu.posts.PostObjectManager;
-import no.ntnu.search.SearchController;
+import no.ntnu.search.SearchObjectManager;
 import no.ntnu.search.command.SearchCommand;
-import no.ntnu.statistics.StatisticsController;
+import no.ntnu.statistics.StatisticsObjectManager;
 import no.ntnu.statistics.command.StatisticCommand;
 import no.ntnu.tags.TagObjectManager;
 
@@ -27,21 +27,21 @@ public class App {
     private final PostObjectManager postObjectManager;
 
     private ConnectionManager connectionManager;
-    private AuthController authController;
-    private FolderController folderController;
-    private StatisticsController statisticsController;
-    private SearchController searchController;
+    private UserObjectManager userObjectManager;
+    private FolderObjectManager folderObjectManager;
+    private StatisticsObjectManager statisticsObjectManager;
+    private SearchObjectManager searchObjectManager;
 
     public App() {
         this.runner = new CommandLineRunner();
         this.courseObjectManager = new CourseObjectManager(this);
-        this.authController = new AuthController(this.getConnectionManager());
-        this.statisticsController = new StatisticsController();
-        this.searchController = new SearchController();
+        this.userObjectManager = new UserObjectManager(this);
+        this.statisticsObjectManager = new StatisticsObjectManager(this);
+        this.searchObjectManager = new SearchObjectManager(this);
 
         this.tagObjectManager = new TagObjectManager(this);
         this.postObjectManager = new PostObjectManager(this);
-        this.folderController = new FolderController(this.getConnectionManager());
+        this.folderObjectManager = new FolderObjectManager(this);
 
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
         this.runner.registerCommand("login", new LoginCommand(this));
@@ -76,16 +76,16 @@ public class App {
         return courseObjectManager;
     }
 
-    public StatisticsController getStatisticsController() {
-        return statisticsController;
+    public StatisticsObjectManager getStatisticsController() {
+        return statisticsObjectManager;
     }
 
-    public SearchController getSearchController() {
-        return searchController;
+    public SearchObjectManager getSearchController() {
+        return searchObjectManager;
     }
 
-    public FolderController getFolderController() {
-        return folderController;
+    public FolderObjectManager getFolderController() {
+        return folderObjectManager;
     }
 
     public PostObjectManager getPostObjectManager() {
@@ -94,10 +94,10 @@ public class App {
 
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;
-        this.authController.setConnectionManager(connectionManager);
-        this.statisticsController.setConnectionManager(connectionManager);
-        this.searchController.setConnectionManager(connectionManager);
-        this.folderController.setConnectionManager(connectionManager);
+        this.userObjectManager.setConnectionManager(connectionManager);
+        this.statisticsObjectManager.setConnectionManager(connectionManager);
+        this.searchObjectManager.setConnectionManager(connectionManager);
+        this.folderObjectManager.setConnectionManager(connectionManager);
 
         if (this.connectionManager == null) {
             return;
@@ -113,12 +113,12 @@ public class App {
         System.out.println("Finished checking tables!");
     }
 
-    public void setAuthController(AuthController authController) {
-        this.authController = authController;
+    public void setAuthController(UserObjectManager userObjectManager) {
+        this.userObjectManager = userObjectManager;
     }
 
-    public AuthController getAuthController() {
-        return authController;
+    public UserObjectManager getAuthController() {
+        return userObjectManager;
     }
 
 }

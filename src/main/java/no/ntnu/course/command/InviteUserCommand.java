@@ -1,7 +1,7 @@
 package no.ntnu.course.command;
 
 import no.ntnu.App;
-import no.ntnu.auth.AuthController;
+import no.ntnu.auth.UserObjectManager;
 import no.ntnu.auth.User;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.course.Course;
@@ -25,16 +25,16 @@ public class InviteUserCommand extends ProtectedCommand {
             return;
         }
 
-        AuthController authController = this.getApp().getAuthController();
+        UserObjectManager userObjectManager = this.getApp().getAuthController();
 
         String userEmail = args[0];
-        User user = authController.getUserByEmail(userEmail);
+        User user = userObjectManager.getUserByEmail(userEmail);
         if (user == null) {
             System.out.println("No user \"" + userEmail + "\" found!");
             return;
         }
 
-        User selfUser = authController.getCurrentUser();
+        User selfUser = userObjectManager.getCurrentUser();
         if (selfUser.equals(user)) {
             System.out.println("You can not invite yourself!");
             return;

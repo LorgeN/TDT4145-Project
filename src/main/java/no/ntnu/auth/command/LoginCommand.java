@@ -1,8 +1,8 @@
 package no.ntnu.auth.command;
 
 import no.ntnu.App;
-import no.ntnu.auth.AuthController;
 import no.ntnu.auth.User;
+import no.ntnu.auth.UserObjectManager;
 import no.ntnu.command.Command;
 
 /**
@@ -34,12 +34,12 @@ public class LoginCommand implements Command {
             return;
         }
 
-        AuthController authController = this.app.getAuthController();
-        authController.loginUser(args[0], args[1]);
+        UserObjectManager userObjectManager = this.app.getAuthController();
+        userObjectManager.loginUser(args[0], args[1]);
 
-        if (authController.loginUser(args[0], args[1])) {
-            User user = authController.getCurrentUser();
-            System.out.println("Succesfully logged in user: " + user);
+        if (userObjectManager.loginUser(args[0], args[1])) {
+            User user = userObjectManager.getCurrentUser();
+            System.out.println("Succesfully logged in user: " + userObjectManager.getCurrentUser());
 
             System.out.println("Registering active today...");
             this.app.getStatisticsController().registerLogin(user.getEmail());

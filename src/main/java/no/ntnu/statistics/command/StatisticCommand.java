@@ -2,16 +2,16 @@ package no.ntnu.statistics.command;
 
 import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
+import no.ntnu.statistics.StatisticsObjectManager;
 import no.ntnu.course.Course;
-import no.ntnu.statistics.StatisticsController;
 
 public class StatisticCommand extends ProtectedCommand {
 
-    private final StatisticsController statisticsController;
+    private final StatisticsObjectManager statisticsObjectManager;
 
     public StatisticCommand(App app) {
         super(app);
-        this.statisticsController = app.getStatisticsController();
+        this.statisticsObjectManager = app.getStatisticsController();
     }
 
     @Override
@@ -22,7 +22,7 @@ public class StatisticCommand extends ProtectedCommand {
             return;
         }
 
-        this.statisticsController.printStatistics(course.getCourseId());
+        this.statisticsObjectManager.printStatistics(course.getCourseId());
     }
 
     @Override
