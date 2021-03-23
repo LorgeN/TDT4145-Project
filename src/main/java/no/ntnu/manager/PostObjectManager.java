@@ -39,14 +39,9 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             "FROM Post P " +
             "WHERE P.ThreadId=?;";
 
-    private static final String SELECT_THREAD_STATEMENT = "SELECT *, " + Thread.NOT_ANSWERED + " AS Answered " +
-            "FROM Thread T WHERE ThreadId = ?;";
-
     private static final String SELECT_THREAD_REPLY_STATUS_STATEMENT = "SELECT *, " +
             "CASE " +
-            "WHEN EXISTS(SELECT * FROM (Post P JOIN User U ON P.CreatedByUser = U.Email) JOIN Participant PP " +
-            "ON U.Email = PP.User WHERE PP.IsInstructor = TRUE AND P.ThreadId = P.ThreadId AND PP.CourseId = ?) " +
-            "THEN " + Thread.INSTRUCTOR_ANSWERED + " " +
+            "WHEN EXISTS(SELECT * FROM (Post P JOIN User U ON P.CreatedByUser = U.Email) JOIN Participant PP ON U.Email = PP.User WHERE PP.IsInstructor = TRUE AND P.ThreadId = T.ThreadId AND PP.CourseId = T.CourseId) THEN " + Thread.INSTRUCTOR_ANSWERED + " " +
             "WHEN (SELECT COUNT(*) FROM Post P3 WHERE P3.ThreadId = T.ThreadId) > 1 THEN " + Thread.ANSWERED + " " +
             "ELSE " + Thread.NOT_ANSWERED + " " +
             "END AS Answered " +
@@ -101,15 +96,10 @@ public class PostObjectManager extends ActiveDomainObjectManager {
      *                 no answer status will be computed.
      * @return The thread
      */
-    public Thread getThread(int threadId, Integer courseId) {
-        String query = courseId == null ? SELECT_THREAD_STATEMENT : SELECT_THREAD_REPLY_STATUS_STATEMENT;
+    public Thread getThread(int threadId) {
         try (Connection connection = this.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(query);
+            PreparedStatement statement = connection.prepareStatement(SELECT_THREAD_REPLY_STATUS_STATEMENT);
             int threadIndex = 1;
-            if (courseId != null) {
-                statement.setInt(1, courseId);
-                threadIndex = 2;
-            }
             statement.setInt(threadIndex, threadId);
 
             ResultSet result = statement.executeQuery();
