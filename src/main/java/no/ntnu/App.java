@@ -10,6 +10,7 @@ import no.ntnu.folder.command.CreateFolderCommand;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
 import no.ntnu.posts.PostObjectManager;
+import no.ntnu.posts.command.GoodCommentCommand;
 import no.ntnu.search.SearchController;
 import no.ntnu.search.command.SearchCommand;
 import no.ntnu.statistics.StatisticsController;
@@ -54,6 +55,7 @@ public class App {
         this.runner.registerCommand("stat", new StatisticCommand(this));
         this.runner.registerCommand("selectcourse", new SelectCourseCommand(this));
         this.runner.registerCommand("search", new SearchCommand(this));
+        this.runner.registerCommand("goodcomment", new GoodCommentCommand(this));
     }
 
     public CommandLineRunner getRunner() {

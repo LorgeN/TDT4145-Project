@@ -18,6 +18,7 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             "VALUES (?, ?, ?, ?);";
     private static final String INSERT_POST_STATEMENT = "INSERT INTO post(ThreadId, IsRoot, Anonymous, PostedAt, " +
             "Text, CreatedByUser) VALUES (?, ?, ?, ?, ?, ?);";
+    private static final String GOOD_COMMENT_STATEMENT = "INSERT INTO GoodComment (User, PostId) VALUES(?, ?)";
 
     // Statement will enforce anonymous choice for the course
     private static final String SELECT_POSTS_STATEMENT = "SELECT P.PostId, P.ThreadId, " +
@@ -30,6 +31,10 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             "FROM post P " +
             "WHERE P.ThreadId=?;";
     private static final String SELECT_THREAD_STATEMENT = "SELECT * FROM thread WHERE ThreadId = ?;";
+    private static final String SELECT_SINGLE_POST_STATEMENT = "SELECT * FROM Post WHERE PostId = ?";
+    private static final String FIND_GOOD_COMMENT_FROM_USER_ON_POST_STATEMENT = "SELECT * FROM GoodComment " +
+            "WHERE User = ? " +
+            "AND PostId = ?";
 
     public PostObjectManager(App app) {
         super(app);
@@ -71,6 +76,22 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             return posts;
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
+        }
+    }
+
+    public Post getPostById(int postId) {
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SELECT_SINGLE_POST_STATEMENT);
+            statement.setInt(1, postId);
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return this.fromPostResult(result);
+            } else {
+                return null;
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
             return null;
         }
     }
@@ -161,4 +182,29 @@ public class PostObjectManager extends ActiveDomainObjectManager {
                 result.getString("CreatedByUser")
         );
     }
+
+    public void addGoodCommentToPost(Post post, User user) throws SQLException {
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(this.GOOD_COMMENT_STATEMENT);
+            statement.setString(1, user.getEmail());
+            statement.setInt(2, post.getPostId());
+            statement.execute();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+    }
+
+    public boolean hasAddedgoodCommentToPost(User user, Post post) {
+        try (Connection connection = this.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(FIND_GOOD_COMMENT_FROM_USER_ON_POST_STATEMENT);
+            statement.setString(1, user.getEmail());
+            statement.setInt(2, post.getPostId());
+            ResultSet result = statement.executeQuery();
+            return result.next();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return false;
+        }
+    }
+
 }
