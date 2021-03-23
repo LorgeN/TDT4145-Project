@@ -35,7 +35,7 @@ public class CreateCommentCommand extends ProtectedCommand {
         }
 
         PostObjectManager manager = this.getApp().getPostObjectManager();
-        Thread thread = manager.getThread(threadId);
+        Thread thread = manager.getThread(threadId, null);
 
         if (thread == null) {
             System.out.println("No thread with that ID exists!");

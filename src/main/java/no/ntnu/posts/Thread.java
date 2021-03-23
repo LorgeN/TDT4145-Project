@@ -3,19 +3,24 @@ package no.ntnu.posts;
 import java.util.Objects;
 
 public class Thread {
+    public static final int ANSWERED = 0;
+    public static final int NOT_ANSWERED = 1;
+    public static final int INSTRUCTOR_ANSWERED = 2;
 
     private int threadId;
     private String title;
     private int courseId;
     private int folderId;
     private String tag;
+    private int answered;
 
-    public Thread(int threadId, String title, int courseId, int folderId, String tag) {
+    public Thread(int threadId, String title, int courseId, int folderId, String tag, int answered) {
         this.threadId = threadId;
         this.title = title;
         this.courseId = courseId;
         this.folderId = folderId;
         this.tag = tag;
+        this.answered = answered;
     }
 
     public int getThreadId() {
@@ -36,6 +41,10 @@ public class Thread {
 
     public String getTag() {
         return tag;
+    }
+
+    public int getAnswered() {
+        return answered;
     }
 
     @Override
