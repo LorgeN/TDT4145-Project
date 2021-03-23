@@ -1,29 +1,47 @@
 package no.ntnu.folder;
 
 
+import no.ntnu.App;
+import no.ntnu.mysql.ActiveDomainObjectManager;
 import no.ntnu.mysql.ConnectionManager;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FolderController {
+public class FolderObjectManager extends ActiveDomainObjectManager {
     private ConnectionManager connectionManager;
+    private final String INSERT_FOLDER = "INSERT INTO Folder(Name, CourseId, ParentFolderId) VALUES(?, ?, ?);";
 
-    public FolderController(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
+    public FolderObjectManager(App app) {
+        super(app);
     }
 
     public void createFolder(String name, int courseId, Integer parentFolderId) throws SQLException, NullPointerException {
         if (name == null) {
             throw new NullPointerException("Please provide a name!");
         }
-        Folder folder = new Folder(name, courseId, parentFolderId);
-        Connection conn = connectionManager.getConnection();
-        folder.save(conn);
+
+        try (Connection connection = connectionManager.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_FOLDER, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, name);
+            statement.setInt(2, courseId);
+
+            if (parentFolderId != null) {
+                statement.setInt(3, parentFolderId);
+            } else {
+                statement.setNull(3, Types.INTEGER);
+            }
+
+            statement.execute();
+        } catch (SQLException e){
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     public List<Folder> getFoldersByName(int courseId, String name) {
@@ -54,7 +72,6 @@ public class FolderController {
         folder.setFolderId(folderId);
         return folder;
     }
-
 
     public void setConnectionManager(ConnectionManager connectionManager) {
         this.connectionManager = connectionManager;

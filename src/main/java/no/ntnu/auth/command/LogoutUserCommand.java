@@ -1,7 +1,7 @@
 package no.ntnu.auth.command;
 
 import no.ntnu.App;
-import no.ntnu.auth.AuthController;
+import no.ntnu.auth.UserObjectManager;
 import no.ntnu.command.Command;
 
 /**
@@ -26,7 +26,7 @@ public class LogoutUserCommand implements Command {
 
     @Override
     public void execute(String label, String[] args) {
-        AuthController authController = this.app.getAuthController();
-        authController.logoutUser();
+        UserObjectManager userObjectManager = this.app.getAuthController();
+        userObjectManager.logoutUser();
     }
 }

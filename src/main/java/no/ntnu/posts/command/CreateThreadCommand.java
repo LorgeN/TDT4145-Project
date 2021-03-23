@@ -4,7 +4,7 @@ import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.course.Course;
 import no.ntnu.folder.Folder;
-import no.ntnu.folder.FolderController;
+import no.ntnu.folder.FolderObjectManager;
 import no.ntnu.posts.PostObjectManager;
 import no.ntnu.posts.Thread;
 import no.ntnu.tags.Tag;
@@ -47,8 +47,8 @@ public class CreateThreadCommand extends ProtectedCommand {
             anonymous = Boolean.parseBoolean(args[2]);
         }
 
-        FolderController folderController = this.getApp().getFolderController();
-        List<Folder> folders = folderController.getFoldersByName(course.getCourseId(), args[0]);
+        FolderObjectManager folderObjectManager = this.getApp().getFolderController();
+        List<Folder> folders = folderObjectManager.getFoldersByName(course.getCourseId(), args[0]);
         Folder folder = CommandUtil.selectOptions(folders);
         if (folder == null) {
             System.out.println("Could not find folder \"" + args[0] + "\"!");

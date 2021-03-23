@@ -1,5 +1,7 @@
 package no.ntnu.auth;
 
+import no.ntnu.App;
+import no.ntnu.mysql.ActiveDomainObjectManager;
 import no.ntnu.mysql.ConnectionManager;
 
 import java.sql.Connection;
@@ -10,35 +12,43 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class AuthController {
+public class UserObjectManager extends ActiveDomainObjectManager {
 
     private static final String SELECT_USER_BY_EMAIL_STATEMENT = "SELECT Email, Name, Password FROM User WHERE Email = ?";
+    private static final String INSERT_USER = "INSERT INTO User (Email, Name, Password) VALUES (?, ?, ?)";
 
     private User currentUser = null;
     private ConnectionManager connectionManager;
 
-    public AuthController(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
+    public UserObjectManager(App app) {
+        super(app);
     }
 
     /**
      * Creates a new user in the database
      *
-     * @param email    the unique identifier for the user (email address)
-     * @param name
-     * @param password
+     * @param email the unique identifier for the user (email address)
+     * @param name the name of the user
+     * @param password the password of the user
      * @throws SQLException if anything goes wrong when inserting user
      */
     public void createUser(String email, String name, String password) throws SQLException {
-        User user = new User(email, name, password);
-        user.save(this.connectionManager.getConnection());
+        try (Connection connection = connectionManager.getConnection(); PreparedStatement statement = connection.prepareStatement(INSERT_USER)) {
+            statement.setString(1, email);
+            statement.setString(2, name);
+            statement.setString(3, password);
+            statement.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw e;
+        }
     }
 
     /**
      * Attempts to log in the user with the given credentials
      *
-     * @param email
-     * @param password
+     * @param email the email of the user
+     * @param password the password of the user
      */
     public boolean loginUser(String email, String password) {
         User user = this.getUserByEmail(email);
