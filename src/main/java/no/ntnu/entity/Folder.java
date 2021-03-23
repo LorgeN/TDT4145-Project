@@ -1,5 +1,7 @@
 package no.ntnu.entity;
 
+import java.util.Objects;
+
 public class Folder {
     private final String name;
     private int folderId;
@@ -21,12 +23,34 @@ public class Folder {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        Folder folder = (Folder) o;
+        return getFolderId() == folder.getFolderId()
+                && courseId == folder.courseId
+                && Objects.equals(name, folder.name)
+                && Objects.equals(parentFolderId, folder.parentFolderId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, getFolderId(), parentFolderId, courseId);
+    }
+
+    @Override
     public String toString() {
         return "Folder{" +
-            "name='" + name + '\'' +
-            ", folderId=" + folderId +
-            ", parentFolderId=" + parentFolderId +
-            ", courseId=" + courseId +
-            '}';
+                "name='" + name + '\'' +
+                ", folderId=" + folderId +
+                ", parentFolderId=" + parentFolderId +
+                ", courseId=" + courseId +
+                '}';
     }
 }

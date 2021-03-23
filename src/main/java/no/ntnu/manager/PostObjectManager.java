@@ -1,13 +1,10 @@
 package no.ntnu.manager;
 
 import no.ntnu.App;
-import no.ntnu.entity.User;
-import no.ntnu.mysql.ActiveDomainObjectManager;
 import no.ntnu.entity.Post;
 import no.ntnu.entity.Thread;
-import no.ntnu.command.posts.CreateCommentCommand;
-import no.ntnu.command.posts.CreateThreadCommand;
-import no.ntnu.command.posts.ViewThreadCommand;
+import no.ntnu.entity.User;
+import no.ntnu.mysql.ActiveDomainObjectManager;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -18,8 +15,10 @@ public class PostObjectManager extends ActiveDomainObjectManager {
 
     private static final String INSERT_THREAD_STATEMENT = "INSERT INTO thread(Title, CourseId, FolderId, Tag) " +
             "VALUES (?, ?, ?, ?);";
+
     private static final String INSERT_POST_STATEMENT = "INSERT INTO post(ThreadId, IsRoot, Anonymous, PostedAt, " +
             "Text, CreatedByUser) VALUES (?, ?, ?, ?, ?, ?);";
+
     private static final String GOOD_COMMENT_STATEMENT = "INSERT INTO GoodComment (User, PostId) VALUES(?, ?)";
 
     // Statement will enforce anonymous choice for the course
@@ -34,7 +33,7 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             "WHERE P.ThreadId=?;";
 
     private static final String SELECT_THREAD_STATEMENT = "SELECT *, " + Thread.NOT_ANSWERED + " AS Answered " +
-        "FROM Thread T WHERE ThreadId = ?;";
+            "FROM Thread T WHERE ThreadId = ?;";
 
     private static final String SELECT_THREAD_REPLY_STATUS_STATEMENT = "SELECT *, " +
             "CASE " +
@@ -42,22 +41,51 @@ public class PostObjectManager extends ActiveDomainObjectManager {
             "WHEN (SELECT COUNT(*) FROM Post P3 WHERE P3.ThreadId = T.ThreadId) > 1 THEN " + Thread.ANSWERED + " " +
             "ELSE " + Thread.NOT_ANSWERED + " " +
             "END AS Answered " +
-        "FROM Thread T WHERE T.ThreadId = ?;";
+            "FROM Thread T WHERE T.ThreadId = ?;";
+
     private static final String SELECT_SINGLE_POST_STATEMENT = "SELECT * FROM Post WHERE PostId = ?";
+
     private static final String FIND_GOOD_COMMENT_FROM_USER_ON_POST_STATEMENT = "SELECT * FROM GoodComment " +
             "WHERE User = ? " +
             "AND PostId = ?";
+
+    private static final String SEARCH_STRING = "SELECT * FROM Post P JOIN Thread T ON P.ThreadId = T.ThreadId WHERE P.Text LIKE ? AND T.CourseId = ?";
 
     public PostObjectManager(App app) {
         super(app);
     }
 
+    /**
+     * Searches for posts containing keyword as specified in usecase 4
+     *
+     * @param keyword include only posts with text containing this keyword
+     */
+    public List<Post> search(String keyword, int courseId) {
+        try (Connection connection = this.connectionManager.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement(SEARCH_STRING);
+            statement.setString(1, "%" + keyword + "%");
+            statement.setInt(2, courseId);
+
+            ResultSet results = statement.executeQuery();
+
+            List<Post> posts = new ArrayList<>();
+            while (results.next()) {
+                posts.add(this.fromPostResult(results));
+            }
+
+            return posts;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public Thread getThread(int threadId, Integer courseId) {
-        String query = courseId == null? SELECT_THREAD_STATEMENT : SELECT_THREAD_REPLY_STATUS_STATEMENT;
+        String query = courseId == null ? SELECT_THREAD_STATEMENT : SELECT_THREAD_REPLY_STATUS_STATEMENT;
         try (Connection connection = this.getConnection()) {
             PreparedStatement statement = connection.prepareStatement(query);
             int threadIndex = 1;
-            if (courseId != null){
+            if (courseId != null) {
                 statement.setInt(1, courseId);
                 threadIndex = 2;
             }

@@ -7,12 +7,12 @@ public class Thread {
     public static final int NOT_ANSWERED = 1;
     public static final int INSTRUCTOR_ANSWERED = 2;
 
-    private int threadId;
-    private String title;
-    private int courseId;
-    private int folderId;
-    private String tag;
-    private int answered;
+    private final int threadId;
+    private final String title;
+    private final int courseId;
+    private final int folderId;
+    private final String tag;
+    private final int answered;
 
     public Thread(int threadId, String title, int courseId, int folderId, String tag, int answered) {
         this.threadId = threadId;

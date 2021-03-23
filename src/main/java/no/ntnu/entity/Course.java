@@ -5,9 +5,9 @@ import java.util.Objects;
 public class Course {
 
     private int courseId;
-    private String name;
-    private String term;
-    private boolean allowAnonymous;
+    private final String name;
+    private final String term;
+    private final boolean allowAnonymous;
 
     public Course(int courseId, String name, String term, boolean allowAnonymous) {
         this.courseId = courseId;

@@ -4,9 +4,9 @@ import java.util.Objects;
 
 public class CourseParticipant {
 
-    private String user;
-    private int courseId;
-    private boolean instructor;
+    private final String user;
+    private final int courseId;
+    private final boolean instructor;
 
     public CourseParticipant(String user, int courseId, boolean instructor) {
         this.user = user;

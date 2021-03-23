@@ -5,13 +5,13 @@ import java.util.Objects;
 
 public class Post {
 
-    private int postId;
-    private int threadId;
-    private boolean isRoot;
-    private boolean anonymous;
-    private LocalDateTime postedAt;
-    private String text;
-    private String createdByUser;
+    private final int postId;
+    private final int threadId;
+    private final boolean isRoot;
+    private final boolean anonymous;
+    private final LocalDateTime postedAt;
+    private final String text;
+    private final String createdByUser;
 
     public Post(int postId, int threadId, boolean isRoot, boolean anonymous, LocalDateTime postedAt, String text, String createdByUser) {
         this.postId = postId;
@@ -62,7 +62,13 @@ public class Post {
         }
 
         Post post = (Post) o;
-        return getPostId() == post.getPostId() && getThreadId() == post.getThreadId() && isRoot() == post.isRoot() && isAnonymous() == post.isAnonymous() && Objects.equals(getPostedAt(), post.getPostedAt()) && Objects.equals(getText(), post.getText()) && Objects.equals(getCreatedByUser(), post.getCreatedByUser());
+        return getPostId() == post.getPostId()
+                && getThreadId() == post.getThreadId()
+                && isRoot() == post.isRoot()
+                && isAnonymous() == post.isAnonymous()
+                && Objects.equals(getPostedAt(), post.getPostedAt())
+                && Objects.equals(getText(), post.getText())
+                && Objects.equals(getCreatedByUser(), post.getCreatedByUser());
     }
 
     @Override
