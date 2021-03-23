@@ -92,8 +92,6 @@ public class PostObjectManager extends ActiveDomainObjectManager {
      * Gets information about the {@link Thread thread} with the given thread ID.
      *
      * @param threadId The thread's ID
-     * @param courseId The ID of the course the thread is in. Optional. If not provided,
-     *                 no answer status will be computed.
      * @return The thread
      */
     public Thread getThread(int threadId) {
