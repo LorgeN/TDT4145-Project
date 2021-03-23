@@ -33,6 +33,7 @@ public class JavaLauncher {
             app.setConnectionManager(new ConnectionManager(url, username, password));
         }
 
+        System.out.println("Could not find database config in environment! Please enter one using the dbconnect command.");
         app.startRunner();
     }
 }
