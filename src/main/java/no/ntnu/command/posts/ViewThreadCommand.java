@@ -52,12 +52,7 @@ public class ViewThreadCommand extends ProtectedCommand {
 
 
         PostObjectManager manager = this.getApp().getPostObjectManager();
-        Course selectedCourse = this.getApp().getCourseObjectManager().getSelectedCourse();
-        Integer courseId = null;
-        if (selectedCourse != null){
-           courseId = selectedCourse.getCourseId();
-        }
-        Thread thread = manager.getThread(threadId, courseId);
+        Thread thread = manager.getThread(threadId);
         if (thread == null) {
             System.out.println("No thread with that ID exists!");
             return;
@@ -70,21 +65,16 @@ public class ViewThreadCommand extends ProtectedCommand {
         this.getApp().getStatisticsManager().readPost(user.getEmail(), posts.stream()
                 .map(Post::getPostId).collect(Collectors.toList()));
 
-        String ansiColor = ANSI_WHITE;
-        String color = "To get a color you need to select a course";
-
         // Change thread color depending on whether or not someone has answered it and if that someone was an instructor
-        if (selectedCourse != null){
-            ansiColor = ANSI_RED;
-            color = "Red";
+        String ansiColor = ANSI_RED;
+        String color = "Red";
 
-            if (thread.getAnswered() == Thread.ANSWERED){
-                ansiColor = ANSI_BLUE;
-                color = "Blue";
-            } else if (thread.getAnswered() == Thread.INSTRUCTOR_ANSWERED) {
-                ansiColor = ANSI_GREEN;
-                color = "Green";
-            }
+        if (thread.getAnswered() == Thread.ANSWERED){
+            ansiColor = ANSI_BLUE;
+            color = "Blue";
+        } else if (thread.getAnswered() == Thread.INSTRUCTOR_ANSWERED) {
+            ansiColor = ANSI_GREEN;
+            color = "Green";
         }
 
         System.out.println(ansiColor + "Thread " + thread.getThreadId() + ": " + thread.getTitle() + " (" + color + ")" + ANSI_RESET);
