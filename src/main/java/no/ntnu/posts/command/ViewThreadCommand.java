@@ -96,8 +96,8 @@ public class ViewThreadCommand extends ProtectedCommand {
                 .sorted(Comparator.comparing(Post::getPostedAt))
                 .forEach(post -> System.out.println((post.isRoot() ? "(ROOT) " : "") +
                         (post.isAnonymous() ? "Anonym" : post.getCreatedByUser()) + " @ " +
-                        DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(post.getPostedAt()) + " > " +
-                        post.getText()));
+                        DateTimeFormatter.ISO_LOCAL_DATE_TIME.format(post.getPostedAt()) + " (" + post.getPostId()
+                        + ") > " + post.getText()));
 
     }
 }
