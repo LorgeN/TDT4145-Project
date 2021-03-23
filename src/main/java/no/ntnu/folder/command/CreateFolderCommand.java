@@ -30,14 +30,14 @@ public class CreateFolderCommand extends ProtectedCommand {
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        if (args.length < 1){
+        if (args.length < 1) {
             System.out.println("Please enter at least a name");
             return;
         }
 
         String name = args[0];
         Course course = this.getApp().getCourseObjectManager().getSelectedCourse();
-        if (course == null){
+        if (course == null) {
             System.out.println("You have to select a course before you can create a folder!");
             return;
         }
@@ -50,8 +50,8 @@ public class CreateFolderCommand extends ProtectedCommand {
             parentFolderId = CommandUtil.selectOptions(folders).getFolderId();
 
             if (folders == null) {
-               System.out.println("Could not find any potential parent folders with that name");
-               return;
+                System.out.println("Could not find any potential parent folders with that name");
+                return;
             }
         }
 

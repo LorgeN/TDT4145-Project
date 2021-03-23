@@ -9,6 +9,7 @@ import no.ntnu.folder.FolderObjectManager;
 import no.ntnu.folder.command.CreateFolderCommand;
 import no.ntnu.mysql.ConnectionManager;
 import no.ntnu.mysql.command.DatabaseConnectCommand;
+import no.ntnu.posts.PostObjectManager;
 import no.ntnu.search.SearchObjectManager;
 import no.ntnu.search.command.SearchCommand;
 import no.ntnu.statistics.StatisticsObjectManager;
@@ -23,6 +24,7 @@ public class App {
     private final CommandLineRunner runner;
     private final CourseObjectManager courseObjectManager;
     private final TagObjectManager tagObjectManager;
+    private final PostObjectManager postObjectManager;
 
     private ConnectionManager connectionManager;
     private UserObjectManager userObjectManager;
@@ -38,6 +40,7 @@ public class App {
         this.searchObjectManager = new SearchObjectManager(this);
 
         this.tagObjectManager = new TagObjectManager(this);
+        this.postObjectManager = new PostObjectManager(this);
         this.folderObjectManager = new FolderObjectManager(this);
 
         this.runner.registerCommand("dbconnect", new DatabaseConnectCommand(this));
@@ -83,6 +86,10 @@ public class App {
 
     public FolderObjectManager getFolderController() {
         return folderObjectManager;
+    }
+
+    public PostObjectManager getPostObjectManager() {
+        return postObjectManager;
     }
 
     public void setConnectionManager(ConnectionManager connectionManager) {

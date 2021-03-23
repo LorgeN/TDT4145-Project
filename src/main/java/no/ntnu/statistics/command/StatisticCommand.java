@@ -3,6 +3,7 @@ package no.ntnu.statistics.command;
 import no.ntnu.App;
 import no.ntnu.auth.command.ProtectedCommand;
 import no.ntnu.statistics.StatisticsObjectManager;
+import no.ntnu.course.Course;
 
 public class StatisticCommand extends ProtectedCommand {
 
@@ -15,7 +16,13 @@ public class StatisticCommand extends ProtectedCommand {
 
     @Override
     protected void protectedExecute(String label, String[] args) {
-        this.statisticsObjectManager.printStatistics();
+        Course course = this.getApp().getCourseObjectManager().getSelectedCourse();
+        if (course == null) {
+            System.out.println("No course selected!");
+            return;
+        }
+
+        this.statisticsObjectManager.printStatistics(course.getCourseId());
     }
 
     @Override

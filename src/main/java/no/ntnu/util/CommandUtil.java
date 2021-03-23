@@ -10,6 +10,18 @@ import java.util.function.Function;
 public class CommandUtil {
 
     /**
+     * Accepts a single input line from the command line
+     *
+     * @param prompt The prompt
+     * @return The entered value
+     */
+    public static String acceptInput(String prompt) {
+        System.out.println(prompt);
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
+    }
+
+    /**
      * Creates a dialog for selecting one out of a list of provided options, e. g.
      * for selecting a course. Uses {@code #toString()} for printing options.
      *
