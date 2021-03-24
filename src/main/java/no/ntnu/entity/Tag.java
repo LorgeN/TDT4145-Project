@@ -2,6 +2,9 @@ package no.ntnu.entity;
 
 import java.util.Objects;
 
+/**
+ * Object representation of a Tag entity
+ */
 public class Tag {
 
     private final int courseId;
