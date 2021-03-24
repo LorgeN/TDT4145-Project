@@ -8,6 +8,9 @@ import no.ntnu.util.CommandUtil;
 
 import java.util.List;
 
+/**
+ * Command to select a course
+ */
 public class SelectCourseCommand extends ProtectedCommand {
     public SelectCourseCommand(App app) {
         super(app);

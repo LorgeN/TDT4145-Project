@@ -9,6 +9,9 @@ import no.ntnu.util.CommandUtil;
 
 import java.util.List;
 
+/**
+ * Command to create a folder
+ */
 public class CreateFolderCommand extends ProtectedCommand {
     private final FolderObjectManager folderObjectManager;
 

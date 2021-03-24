@@ -7,6 +7,9 @@ import no.ntnu.manager.PostObjectManager;
 import no.ntnu.entity.Thread;
 import no.ntnu.util.CommandUtil;
 
+/**
+ * Command to create a comment
+ */
 public class CreateCommentCommand extends ProtectedCommand {
 
     public CreateCommentCommand(App app) {

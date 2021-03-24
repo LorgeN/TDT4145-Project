@@ -13,6 +13,9 @@ import no.ntnu.util.CommandUtil;
 
 import java.util.List;
 
+/**
+ * Command to create a thread
+ */
 public class CreateThreadCommand extends ProtectedCommand {
 
     public CreateThreadCommand(App app) {

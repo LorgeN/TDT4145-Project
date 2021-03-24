@@ -8,6 +8,9 @@ import no.ntnu.manager.CourseObjectManager;
 
 import java.util.Map;
 
+/**
+ * Command to view a course
+ */
 public class ViewCoursesCommand extends ProtectedCommand {
 
     public ViewCoursesCommand(App app) {

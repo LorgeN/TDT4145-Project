@@ -2,6 +2,9 @@ package no.ntnu.command.auth;
 
 import no.ntnu.App;
 
+/**
+ * Command to print out the currently logged in user
+ */
 public class CurrentUserCommand extends ProtectedCommand {
 
     public CurrentUserCommand(App app) {
