@@ -19,4 +19,4 @@ Example:
 $ java -jar TDT4145Project.jar jdbc:mysql://localhost/database root 123
 ```
 
-You may also authenticate using the `dbconnect` command.
+You may also authenticate using the `dbconnect` command, or use enviornment variables (`DB_URL`, `DB_USERNAME`, `DB_PASSWORD`).
