@@ -5,15 +5,19 @@ import no.ntnu.entity.Course;
 import no.ntnu.entity.CourseParticipant;
 import no.ntnu.entity.User;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Object manager for the {@link Course} and {@link CourseParticipant} entity classes.
- * Maintains a state for the currently selected course.
+ * Object manager for the {@link Course} and {@link CourseParticipant} entity classes. Maintains a
+ * state for the currently selected course.
  * <p>
  * {@inheritDoc}
  *
@@ -23,19 +27,19 @@ import java.util.Map;
 public class CourseObjectManager extends ActiveDomainObjectManager {
 
     private static final String INSERT_COURSE_STATEMENT = "INSERT INTO Course(Name, Term, AllowAnonymous)" +
-            " VALUES (?, ?, ?);";
+        " VALUES (?, ?, ?);";
 
     private static final String SELECT_USER_COURSES_BY_NAME_STATEMENT = "SELECT * FROM Course C NATURAL" +
         " JOIN Participant P WHERE C.Name = ? AND P.User = ?;";
 
     private static final String SELECT_INSTRUCTOR_COURSES_BY_NAME_STATEMENT = "SELECT * FROM Course C NATURAL" +
-            " JOIN Participant P WHERE C.Name = ? AND P.User = ? AND P.IsInstructor = TRUE;";
+        " JOIN Participant P WHERE C.Name = ? AND P.User = ? AND P.IsInstructor = TRUE;";
 
     private static final String INSERT_PARTICIPANT_STATEMENT = "INSERT INTO Participant(User, CourseId, IsInstructor)" +
-            " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE IsInstructor=VALUES(IsInstructor);";
+        " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE IsInstructor=VALUES(IsInstructor);";
 
     private static final String SELECT_USER_COURSES_STATEMENT = "SELECT P.IsInstructor, C.* FROM " +
-            "Participant P NATURAL JOIN Course C WHERE P.User = ?;";
+        "Participant P NATURAL JOIN Course C WHERE P.User = ?;";
 
     private Course selectedCourse;
 
@@ -61,16 +65,17 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
 
         if (name == null || name.length() > 64) {
             throw new IllegalArgumentException("Invalid name \"" + name + "\"! Can " +
-                    "not be null and must be at most 64 characters");
+                                                   "not be null and must be at most 64 characters");
         }
 
         if (term == null || term.length() > 32) {
             throw new IllegalArgumentException("Invalid term \"" + term + "\"! Can " +
-                    "not be null and must be at most 32 characters");
+                                                   "not be null and must be at most 32 characters");
         }
 
         try (Connection connection = this.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(INSERT_COURSE_STATEMENT, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement statement = connection.prepareStatement(INSERT_COURSE_STATEMENT,
+                                                                      Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, name);
             statement.setString(2, term);
             statement.setBoolean(3, allowAnonymous);
@@ -109,9 +114,10 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
     }
 
     /**
-     * Gets all courses with a given name
+     * Gets all courses with a given name that the given user is a participant of
      *
-     * @param name the name of the courses to return
+     * @param user The user's email
+     * @param name The name to search for
      * @return list of courses with the name
      */
     public List<Course> getCoursesByName(String user, String name) {
@@ -120,7 +126,8 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
 
         try (Connection connection = this.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SELECT_USER_COURSES_BY_NAME_STATEMENT);
+            PreparedStatement statement = connection.prepareStatement(
+                SELECT_USER_COURSES_BY_NAME_STATEMENT);
             statement.setString(1, name);
             statement.setString(2, user);
 
@@ -154,7 +161,8 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
 
         try (Connection connection = this.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SELECT_INSTRUCTOR_COURSES_BY_NAME_STATEMENT);
+            PreparedStatement statement = connection.prepareStatement(
+                SELECT_INSTRUCTOR_COURSES_BY_NAME_STATEMENT);
             statement.setString(1, name);
             statement.setString(2, user);
 
@@ -172,8 +180,8 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
     }
 
     /**
-     * Adds a participant to a course. If the user is already a participant,
-     * their isInstructor status will be updated to what is provided.
+     * Adds a participant to a course. If the user is already a participant, their isInstructor
+     * status will be updated to what is provided.
      *
      * @param user         the user to add as a participant
      * @param courseId     the id of the course the user participates in
@@ -204,7 +212,8 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
      * Get all the courses a given user participates in
      *
      * @param user the user that participates
-     * @return Map with course as key and boolean signifying whether or not the user is an instructor as value
+     * @return Map with course as key and boolean signifying whether or not the user is an
+     * instructor as value
      */
     public Map<Course, Boolean> getCourses(String user) {
         if (user == null) {
@@ -212,7 +221,8 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
         }
 
         try (Connection connection = this.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SELECT_USER_COURSES_STATEMENT);
+            PreparedStatement statement = connection.prepareStatement(
+                SELECT_USER_COURSES_STATEMENT);
             statement.setString(1, user);
 
             ResultSet result = statement.executeQuery();
