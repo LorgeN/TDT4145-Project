@@ -73,10 +73,9 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
                 printRow("Name", "Email", "antall_lest", "antall_opprettet");
                 while (result.next()) {
                     String name = result.getString("Name");
-                    String email = result.getString("Email");
                     String antallLest = result.getString("antall_lest");
                     String antallOpprettet = result.getString("antall_opprettet");
-                    printRow(name, email, antallLest, antallOpprettet);
+                    printRow(name, antallLest, antallOpprettet);
                 }
             } else {
                 System.out.println("No result...");
@@ -96,7 +95,6 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
         for (int i = 0; i < columns.length; i++) {
             boolean isLast = i == columns.length - 1;
             printColumn(columns[i], isLast);
-
         }
     }
 
@@ -104,13 +102,13 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
      * Helper function for printing out a column in a row with padding
      *
      * @param columnValue the string value for the column
-     * @param isLast      flag for if it is the last column. If true this will append a newline at the end
+     * @param isLast      flag for if it is the last column. If true this will append a newline at
+     *                    the end
      */
     private void printColumn(String columnValue, boolean isLast) {
         String end = isLast ? "\n" : "";
         System.out.print(String.format("%-30s", columnValue) + end);
     }
-
 
     /**
      * Helper function for getting the query string from file
@@ -119,7 +117,8 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
      * @throws IOException if the file cannot be found
      */
     private String getQuery() throws IOException {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("no/ntnu/statistics/statistic_query.sql");
+        InputStream is = getClass().getClassLoader().getResourceAsStream(
+            "no/ntnu/statistics/statistic_query.sql");
         if (is != null) {
             try (InputStreamReader inputStreamReader = new InputStreamReader(is);
                  BufferedReader reader = new BufferedReader(inputStreamReader)) {
@@ -128,6 +127,5 @@ public class StatisticsObjectManager extends ActiveDomainObjectManager {
         } else {
             throw new IOException("Could not find the file");
         }
-
     }
 }
