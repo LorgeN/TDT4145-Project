@@ -34,7 +34,7 @@ public class CreateCommentCommand extends ProtectedCommand {
 
         boolean anonymous = false;
         if (args.length > 1) {
-            anonymous = Boolean.parseBoolean(args[2]);
+            anonymous = Boolean.parseBoolean(args[1]);
         }
 
         PostObjectManager manager = this.getApp().getPostObjectManager();
