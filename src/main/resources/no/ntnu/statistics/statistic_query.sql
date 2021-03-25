@@ -1,5 +1,5 @@
 SELECT User.Name,
-       COUNT(DISTINCT Pr.PostId) AS antall_lest,
+       COUNT(DISTINCT PR.PostId) AS antall_lest,
        COUNT(DISTINCT P2.PostId) AS antall_opprettet
 FROM (User INNER JOIN Participant P on User.Email = P.User)
          INNER JOIN Course C ON C.CourseId = P.CourseId
