@@ -16,8 +16,8 @@ import java.util.stream.Collectors;
 public class StatisticsObjectManager extends ActiveDomainObjectManager {
 
     // Use insert ignore so we dont have to actually check if this exists, which saves 1 query
-    private static final String INSERT_READ_STATEMENT = "INSERT IGNORE INTO postread(User, PostId) VALUES (?, ?);";
-    private static final String INSERT_LOGIN_STATEMENT = "INSERT IGNORE INTO activedays(User, Date) VALUES (?, NOW());";
+    private static final String INSERT_READ_STATEMENT = "INSERT IGNORE INTO PostRead(User, PostId) VALUES (?, ?);";
+    private static final String INSERT_LOGIN_STATEMENT = "INSERT IGNORE INTO ActiveDays(User, Date) VALUES (?, NOW());";
 
     public StatisticsObjectManager(App app) {
         super(app);

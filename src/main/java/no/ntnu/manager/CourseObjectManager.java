@@ -22,19 +22,19 @@ import java.util.Map;
  */
 public class CourseObjectManager extends ActiveDomainObjectManager {
 
-    private static final String INSERT_COURSE_STATEMENT = "INSERT INTO course(Name, Term, AllowAnonymous)" +
+    private static final String INSERT_COURSE_STATEMENT = "INSERT INTO Course(Name, Term, AllowAnonymous)" +
             " VALUES (?, ?, ?);";
 
-    private static final String SELECT_COURSES_BY_NAME_STATEMENT = "SELECT * FROM course WHERE course.Name = ?;";
+    private static final String SELECT_COURSES_BY_NAME_STATEMENT = "SELECT * FROM Course WHERE Course.Name = ?;";
 
-    private static final String SELECT_INSTRUCTOR_COURSES_BY_NAME_STATEMENT = "SELECT * FROM course C NATURAL" +
-            " JOIN participant P WHERE C.Name = ? AND P.User = ? AND P.IsInstructor = TRUE;";
+    private static final String SELECT_INSTRUCTOR_COURSES_BY_NAME_STATEMENT = "SELECT * FROM Course C NATURAL" +
+            " JOIN Participant P WHERE C.Name = ? AND P.User = ? AND P.IsInstructor = TRUE;";
 
-    private static final String INSERT_PARTICIPANT_STATEMENT = "INSERT INTO participant(User, CourseId, IsInstructor)" +
+    private static final String INSERT_PARTICIPANT_STATEMENT = "INSERT INTO Participant(User, CourseId, IsInstructor)" +
             " VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE IsInstructor=VALUES(IsInstructor);";
 
-    private static final String SELECT_USER_COURSES_STATEMENT = "SELECT p.IsInstructor, c.* FROM " +
-            "participant p NATURAL JOIN course c WHERE p.User = ?;";
+    private static final String SELECT_USER_COURSES_STATEMENT = "SELECT P.IsInstructor, C.* FROM " +
+            "Participant P NATURAL JOIN Course C WHERE P.User = ?;";
 
     private Course selectedCourse;
 

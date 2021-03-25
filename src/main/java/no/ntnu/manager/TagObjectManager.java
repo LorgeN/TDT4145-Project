@@ -15,10 +15,10 @@ import java.util.Map;
 
 public class TagObjectManager extends ActiveDomainObjectManager {
 
-    private static final String SELECT_TAGS_STATEMENT = "SELECT tag.Name AS tag, course.* FROM tag INNER JOIN course ON tag.CourseId = course.CourseId;";
-    private static final String SELECT_COURSE_TAGS_STATEMENT = "SELECT * FROM tag WHERE CourseId=? AND Name=?;";
-    private static final String INSERT_TAG_STATEMENT = "INSERT INTO tag VALUES (?, ?);";
-    private static final String DELETE_TAG_STATEMENT = "DELETE FROM tag WHERE CourseId = ? AND Name = ?;";
+    private static final String SELECT_TAGS_STATEMENT = "SELECT Tag.Name AS Tag, Course.* FROM Tag INNER JOIN Course ON Tag.CourseId = Course.CourseId;";
+    private static final String SELECT_COURSE_TAGS_STATEMENT = "SELECT * FROM Tag WHERE CourseId=? AND Name=?;";
+    private static final String INSERT_TAG_STATEMENT = "INSERT INTO Tag VALUES (?, ?);";
+    private static final String DELETE_TAG_STATEMENT = "DELETE FROM Tag WHERE CourseId = ? AND Name = ?;";
 
     public TagObjectManager(App app) {
         super(app);

@@ -20,10 +20,10 @@ import java.util.List;
  */
 public class PostObjectManager extends ActiveDomainObjectManager {
 
-    private static final String INSERT_THREAD_STATEMENT = "INSERT INTO thread(Title, CourseId, FolderId, Tag) " +
+    private static final String INSERT_THREAD_STATEMENT = "INSERT INTO Thread(Title, CourseId, FolderId, Tag) " +
             "VALUES (?, ?, ?, ?);";
 
-    private static final String INSERT_POST_STATEMENT = "INSERT INTO post(ThreadId, IsRoot, Anonymous, PostedAt, " +
+    private static final String INSERT_POST_STATEMENT = "INSERT INTO Post(ThreadId, IsRoot, Anonymous, PostedAt, " +
             "Text, CreatedByUser) VALUES (?, ?, ?, ?, ?, ?);";
 
     private static final String GOOD_COMMENT_STATEMENT = "INSERT INTO GoodComment (User, PostId) VALUES(?, ?)";
@@ -32,8 +32,8 @@ public class PostObjectManager extends ActiveDomainObjectManager {
     private static final String SELECT_POSTS_STATEMENT = "SELECT P.PostId, P.ThreadId, " +
             "P.IsRoot, P.PostedAt, P.Text, P.CreatedByUser, " +
             "IF(P.Anonymous AND EXISTS(SELECT * " +
-            "FROM thread T " +
-            "INNER JOIN course C on T.CourseId = C.CourseId " +
+            "FROM Thread T " +
+            "INNER JOIN Course C on T.CourseId = C.CourseId " +
             "WHERE AllowAnonymous = TRUE AND T.ThreadId = P.ThreadId), " +
             "TRUE, FALSE) AS Anonymous " +
             "FROM Post P " +
