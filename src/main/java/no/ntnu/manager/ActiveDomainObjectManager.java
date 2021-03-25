@@ -39,6 +39,12 @@ public abstract class ActiveDomainObjectManager {
      * @see ConnectionManager#getConnection()
      */
     public Connection getConnection() throws SQLException {
-        return this.app.getConnectionManager().getConnection();
+        ConnectionManager connectionManager = this.app.getConnectionManager();
+        if (connectionManager == null) {
+            throw new IllegalStateException("Please connect to a database before attempting to do " +
+                                                "this! You can connect using the dbconnect command.");
+        }
+
+        return connectionManager.getConnection();
     }
 }
