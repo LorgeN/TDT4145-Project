@@ -8,6 +8,9 @@ import no.ntnu.manager.PostObjectManager;
 
 import java.util.List;
 
+/**
+ * Command to search after a keyword
+ */
 public class SearchCommand extends ProtectedCommand {
     public SearchCommand(App app) {
         super(app);

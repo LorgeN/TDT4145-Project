@@ -2,6 +2,9 @@ package no.ntnu.entity;
 
 import java.util.Objects;
 
+/**
+ * Object representation of a CourseParticipant entity
+ */
 public class CourseParticipant {
 
     private final String user;

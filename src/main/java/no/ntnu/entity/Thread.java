@@ -2,6 +2,9 @@ package no.ntnu.entity;
 
 import java.util.Objects;
 
+/**
+ * Object representation of a Thread entity
+ */
 public class Thread {
     public static final int ANSWERED = 0;
     public static final int NOT_ANSWERED = 1;

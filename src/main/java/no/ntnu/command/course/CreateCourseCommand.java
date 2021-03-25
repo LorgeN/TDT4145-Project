@@ -5,6 +5,9 @@ import no.ntnu.command.auth.ProtectedCommand;
 import no.ntnu.entity.Course;
 import no.ntnu.manager.CourseObjectManager;
 
+/**
+ * Command to create a course
+ */
 public class CreateCourseCommand extends ProtectedCommand {
 
     public CreateCourseCommand(App app) {

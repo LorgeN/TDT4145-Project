@@ -8,6 +8,9 @@ import no.ntnu.manager.PostObjectManager;
 
 import java.sql.SQLException;
 
+/**
+ * Command to add "GoodComment" to a post
+ */
 public class GoodCommentCommand extends ProtectedCommand {
     public GoodCommentCommand(App app) {
         super(app);

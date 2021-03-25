@@ -11,6 +11,9 @@ import no.ntnu.util.CommandUtil;
 
 import java.util.List;
 
+/**
+ * Command to invite a user
+ */
 public class InviteUserCommand extends ProtectedCommand {
 
     public InviteUserCommand(App app) {

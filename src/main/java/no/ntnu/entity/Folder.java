@@ -2,6 +2,9 @@ package no.ntnu.entity;
 
 import java.util.Objects;
 
+/**
+ * Object representation of a Folder entity
+ */
 public class Folder {
     private final String name;
     private int folderId;

@@ -2,6 +2,9 @@ package no.ntnu.entity;
 
 import java.util.Objects;
 
+/**
+ * Object representation of a User entity
+ */
 public class User {
     private final String email;
     private String name;
@@ -41,8 +44,8 @@ public class User {
 
         User user = (User) o;
         return Objects.equals(getEmail(), user.getEmail())
-                && Objects.equals(getName(), user.getName())
-                && Objects.equals(getPassword(), user.getPassword());
+            && Objects.equals(getName(), user.getName())
+            && Objects.equals(getPassword(), user.getPassword());
     }
 
     @Override
@@ -53,8 +56,8 @@ public class User {
     @Override
     public String toString() {
         return "" +
-                email + ": " +
-                name;
+            email + ": " +
+            name;
 
     }
 }

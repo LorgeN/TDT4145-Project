@@ -3,6 +3,9 @@ package no.ntnu.entity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+/**
+ * Object representation of a Post entity
+ */
 public class Post {
 
     private final int postId;

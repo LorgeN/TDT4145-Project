@@ -3,6 +3,9 @@ package no.ntnu.command.auth;
 import no.ntnu.App;
 import no.ntnu.command.Command;
 
+/**
+ * Command for listing all users
+ */
 public class AllUsersCommand implements Command {
 
     private final App app;

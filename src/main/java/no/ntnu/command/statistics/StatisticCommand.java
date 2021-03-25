@@ -5,6 +5,9 @@ import no.ntnu.command.auth.ProtectedCommand;
 import no.ntnu.manager.StatisticsObjectManager;
 import no.ntnu.entity.Course;
 
+/**
+ * Command to view statistics
+ */
 public class StatisticCommand extends ProtectedCommand {
 
     private final StatisticsObjectManager statisticsObjectManager;

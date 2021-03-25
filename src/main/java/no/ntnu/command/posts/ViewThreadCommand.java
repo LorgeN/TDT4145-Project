@@ -13,6 +13,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Command to view a thread
+ */
 public class ViewThreadCommand extends ProtectedCommand {
     private static final String ANSI_RED = "\u001B[31m";
     private static final String ANSI_WHITE = "\u001B[37m";
