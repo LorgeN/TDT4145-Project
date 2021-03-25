@@ -25,7 +25,8 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
     private static final String INSERT_COURSE_STATEMENT = "INSERT INTO Course(Name, Term, AllowAnonymous)" +
             " VALUES (?, ?, ?);";
 
-    private static final String SELECT_COURSES_BY_NAME_STATEMENT = "SELECT * FROM Course WHERE Course.Name = ?;";
+    private static final String SELECT_USER_COURSES_BY_NAME_STATEMENT = "SELECT * FROM Course C NATURAL" +
+        " JOIN Participant P WHERE C.Name = ? AND P.User = ?;";
 
     private static final String SELECT_INSTRUCTOR_COURSES_BY_NAME_STATEMENT = "SELECT * FROM Course C NATURAL" +
             " JOIN Participant P WHERE C.Name = ? AND P.User = ? AND P.IsInstructor = TRUE;";
@@ -113,14 +114,15 @@ public class CourseObjectManager extends ActiveDomainObjectManager {
      * @param name the name of the courses to return
      * @return list of courses with the name
      */
-    public List<Course> getCoursesByName(String name) {
+    public List<Course> getCoursesByName(String user, String name) {
         if (name == null) {
             throw new IllegalArgumentException("Name can not be null!");
         }
 
         try (Connection connection = this.getConnection()) {
-            PreparedStatement statement = connection.prepareStatement(SELECT_COURSES_BY_NAME_STATEMENT);
+            PreparedStatement statement = connection.prepareStatement(SELECT_USER_COURSES_BY_NAME_STATEMENT);
             statement.setString(1, name);
+            statement.setString(2, user);
 
             ResultSet result = statement.executeQuery();
             List<Course> courses = new ArrayList<>();

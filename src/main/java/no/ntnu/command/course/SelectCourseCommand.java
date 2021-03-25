@@ -25,7 +25,8 @@ public class SelectCourseCommand extends ProtectedCommand {
 
         String name = args[0];
         CourseObjectManager manager = this.getApp().getCourseObjectManager();
-        List<Course> courses = manager.getCoursesByName(name);
+        String email = this.getApp().getUserManager().getCurrentUser().getEmail();
+        List<Course> courses = manager.getCoursesByName(email, name);
         Course course = CommandUtil.selectOptions(courses);
         if (course == null) {
             System.out.println("No course by that name found!");
